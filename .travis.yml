@@ -1,12 +1,21 @@
 language: python
 
 python:
+  # Python 3.4 is the latest version compatible with Travis CI when
+  # system_site_packages is true. If Python 3.5 or higher is selected,
+  # the tests will not be able to access Python packages installed system-wide.
   - "3.4" 
 
 virtualenv:
+  # Allow Python running in the mandatory Travis CI virtual environment to
+  # access packages installed in the system-wide Python environment.
+  # This is needed because the Python packages for working with GDAL depend on
+  # shared libraries installed are outside the virtual environment.
   system_site_packages: true 
 
 before_install:
+  # Install gdal libraries and python3 bindings using the latest python3-gdal
+  # package provided by the ubuntugis personal package archive
   - sudo add-apt-repository -y ppa:ubuntugis/ppa
   - sudo apt-get update
   - sudo apt install -y python3-gdal
