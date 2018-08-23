@@ -1,9 +1,12 @@
 language: python
 python:
-  - "3.6"
+  - "3.4"
+virtualenv:
+  system_site_packages: true
 before_install:
+  - sudo add-apt-repository -y ppa:ubuntugis/ppa
   - sudo apt-get update
-  - sudo apt install gdal-bin
+  - sudo apt install -y gdal-bin python3-gdal
 install:
   - pip install ./python/skope_analysis/
 script: pytest -v

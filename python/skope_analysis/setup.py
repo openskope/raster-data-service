@@ -13,7 +13,6 @@ setup(
     package_dir={'': 'src'},
     data_files = [("", ["LICENSE.txt"])],
     install_requires=[
-        'Flask >= 1.0.2',
-        'GDAL >= 2.3.1'
+        'Flask >= 1.0.2'
     ]
 )
