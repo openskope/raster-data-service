@@ -7,10 +7,10 @@ python:
   - "3.4" 
 
 virtualenv:
-  # Allow Python running in the mandatory Travis CI virtual environment to
-  # access packages installed in the system-wide Python environment.
+  # Allow tests running in the Python virtual environment that is mandatory on 
+  # Travis CI to access packages installed in the system-wide Python environment.
   # This is needed because the Python packages for working with GDAL depend on
-  # shared libraries installed are outside the virtual environment.
+  # shared GDAL libraries installed outside the virtual environment.
   system_site_packages: true 
 
 before_install:
