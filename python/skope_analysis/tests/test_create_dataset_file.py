@@ -1,6 +1,7 @@
 import pytest
 import os
 from osgeo import gdal
+import affine
 import skope_analysis
 
 ################################################################################
@@ -47,6 +48,18 @@ def geotransform(dataset):
     return dataset.GetGeoTransform()
 
 @pytest.fixture(scope='module')
+def affine_matrix(geotransform):
+    ''' return the affine matrix for the projection '''
+    return affine.Affine.from_gdal(geotransform[0], geotransform[1],
+                                   geotransform[2], geotransform[3],
+                                   geotransform[4], geotransform[5])
+
+@pytest.fixture(scope='module')
+def inverse_affine(affine_matrix):
+    ''' return the inverse affine matrix for the projection '''
+    return ~affine_matrix
+
+@pytest.fixture(scope='module')
 def first_band(dataset):
     ''' return band 1 of the new dataset '''
     return dataset.GetRasterBand(1) 
@@ -87,3 +100,12 @@ def test_geotransform_is_north_up(geotransform):
 
 def test_projection_is_wgs84(dataset):
     assert dataset.GetProjection()[8:14] == 'WGS 84'
+
+def test_geotransform_origin_is_at_123_w_45_n(geotransform):
+    assert (geotransform[0], geotransform[3]) == (-123, 45)
+
+def test_projected_coordinates_of_pixel_0_0_is_origin(affine_matrix):
+    assert (affine_matrix * (0, 0)) == (-123.0, 45.0)
+
+def test_inverse_projection_of_origin_is_pixel_0_0(inverse_affine):
+    assert (inverse_affine * (-123.0, 45.0)) == (0, 0)
