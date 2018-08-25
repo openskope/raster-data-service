@@ -93,7 +93,7 @@ def test_pixel_width_is_1(geotransform):
     assert geotransform[1] == 1.0
 
 def test_pixel_height_is_2(geotransform):
-    assert geotransform[5] == 2.0
+    assert geotransform[5] == -2.0
 
 def test_geotransform_is_north_up(geotransform):
     assert (geotransform[2],geotransform[4]) == (0,0)
@@ -102,10 +102,16 @@ def test_projection_is_wgs84(dataset):
     assert dataset.GetProjection()[8:14] == 'WGS 84'
 
 def test_geotransform_origin_is_at_123_w_45_n(geotransform):
-    assert (geotransform[0], geotransform[3]) == (-123, 45)
+    assert (geotransform[0], geotransform[3]) == (-123.0, 45.0)
 
-def test_projected_coordinates_of_pixel_0_0_is_origin(affine_matrix):
+def test_projected_coordinates_of_pixel_0_0_is_northwest_corner(affine_matrix):
     assert (affine_matrix * (0, 0)) == (-123.0, 45.0)
 
-def test_inverse_projection_of_origin_is_pixel_0_0(inverse_affine):
+def test_inverse_projection_of_northwest_corner_is_pixel_0_0(inverse_affine):
     assert (inverse_affine * (-123.0, 45.0)) == (0, 0)
+
+def test_projected_coordinates_of_pixel_4_3_is_southeast_corner(affine_matrix):
+    assert (affine_matrix * (5, 4)) == (-118.0, 37.0)
+
+def test_inverse_projection_of_southeast_corner_is_pixel_5_4(inverse_affine):
+    assert (inverse_affine * (-118.0, 37.0)) == (5, 4)

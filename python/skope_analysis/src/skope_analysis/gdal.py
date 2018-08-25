@@ -13,7 +13,7 @@ def create_dataset_file(filename, format, pixel_type,
     dataset = driver.Create(filename, cols, rows, bands, pixel_type)
     
     # specify the data set dimensions and geospatial project projection
-    dataset.SetGeoTransform((origin_x, pixel_width, 0, origin_y, 0, pixel_height))
+    dataset.SetGeoTransform((origin_x, pixel_width, 0, origin_y, 0, -pixel_height))
     srs = osr.SpatialReference()
     srs.SetWellKnownGeogCS(coordinate_system)
     dataset.SetProjection(srs.ExportToWkt())
