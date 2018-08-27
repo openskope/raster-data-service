@@ -59,7 +59,7 @@ describe("When a GET request selects from a float32 datafile a coordinate with a
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-121.0&latitude=47.0&start=0&end=4&csv=true&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-121.0&latitude=43.0&start=0&end=4&csv=true&array=true'
 		});
     });
 
@@ -118,7 +118,7 @@ describe("When a GET request selects from a float32 datafile a coordinate contai
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/float32_variable?longitude=-119.0&latitude=43.0&start=0&end=4&csv=true&array=true'
 		});
     });
 
