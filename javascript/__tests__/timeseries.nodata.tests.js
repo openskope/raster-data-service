@@ -12,7 +12,7 @@ describe("When a GET request selects a pixel with all nodata values and sets nod
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=48.0&start=0&end=4&csv=true&array=true&nodata=ignore'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=42.0&start=0&end=4&csv=true&array=true&nodata=ignore'
 		});
     });
 
@@ -52,7 +52,7 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=ignore'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=43.0&start=0&end=4&csv=true&array=true&nodata=ignore'
 		});
     });
 
@@ -91,7 +91,7 @@ describe("When a GET request selects a pixel with one nodata value and sets noda
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=1000'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=43.0&start=0&end=4&csv=true&array=true&nodata=1000'
 		});
     });
 
@@ -130,7 +130,7 @@ describe("When a GET request selects a pixel with no nodata value but sets nodat
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=46.0&start=0&end=4&csv=true&array=true&nodata=314'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=44.0&start=0&end=4&csv=true&array=true&nodata=314'
 		});
     });
 
@@ -170,7 +170,7 @@ describe("When a GET request selects a pixel with one nodata value and accepts d
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=43.0&start=0&end=4&csv=true&array=true'
 		});
     });
 
@@ -210,7 +210,7 @@ describe("When a GET request selects a pixel with one nodata value and explicitl
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=47.0&start=0&end=4&csv=true&array=true&nodata=detect'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=43.0&start=0&end=4&csv=true&array=true&nodata=detect'
 		});
     });
 

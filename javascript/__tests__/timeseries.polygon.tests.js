@@ -20,8 +20,8 @@ describe("When a GET request selects from a region exactly covering the northwes
     		    "type": "Polygon",
     		    "coordinates": [[
 	    		    	[-123,45],
-	    		        [-123,47],
-	    		        [-121,47],
+	    		        [-123,43],
+	    		        [-121,43],
 	    		        [-121,45],
 	    		        [-123,45]
 	    		    	]]
@@ -202,12 +202,12 @@ describe("When a GET request selects from a 2x2 pixel region that intersects a 2
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
-    		    	[-123,44],
-    		        [-123,46],
-    		        [-121,46],
+    		    	[-123,46],
+    		        [-123,44],
     		        [-121,44],
-    		        [-123,44]
-	    		    	]]
+    		        [-121,46],
+    		        [-123,46]
+	    		]]
 	    		},
 	    		start: 0,
 	    		end: 4
@@ -306,11 +306,11 @@ describe("When a GET request selects a region just outside coverage of the uint1
     		    "type": "Polygon",
     		    "coordinates": [[
     		    	[-124,45],
-    		        [-124,43],
-    		        [-123,43],
+    		        [-124,47],
+    		        [-123,47],
     		        [-123,45],
     		        [-123,45]
-	    		    	]]
+	    		]]
 	    		},
 	    		start: 0,
 	    		end: 4
@@ -426,9 +426,9 @@ describe("When a GET request selects exactly the top-left corner pixel of the ui
     		    "type": "Polygon",
     		    "coordinates": [[
 	    		    	[-123.0,45],
-	    		        [-123.0,46],
-	    		        [-122,46],
-	    		        [-122,45],
+	    		        [-123.0,44],
+	    		        [-122.0,44],
+	    		        [-122.0,44],
 	    		        [-123.0,45]
 	    		    	]]
 	    		},
@@ -529,9 +529,9 @@ describe("When a GET request selects 1/4 of the top-left corner pixel of the uin
     		    "type": "Polygon",
     		    "coordinates": [[
 	    		    	[-123.0,45],
-	    		        [-123.0,45.25],
-	    		        [-122.75,45.25],
-	    		        [-122.75,45.25],
+	    		        [-123.0,44.75],
+	    		        [-122.75,44.75],
+	    		        [-122.75,44.75],
 	    		        [-123.0,45]
 	    		    	]]
 	    		},
@@ -632,11 +632,11 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
-	    		    	[-123,48],
-	    		        [-123,50],
-	    		        [-121,50],
-	    		        [-121,48],
-	    		        [-123,48]
+	    		    	[-123,42],
+	    		        [-123,40],
+	    		        [-121,40],
+	    		        [-121,42],
+	    		        [-123,42]
 	    		    	]]
 	    		},
 	    		start: 0,
@@ -683,11 +683,11 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
-	    		    	[-120,48],
-	    		        [-118,50],
-	    		        [-120,50],
-	    		        [-120,48],
-	    		        [-118,48]
+	    		    	[-120,42],
+	    		        [-118,40],
+	    		        [-120,40],
+	    		        [-120,42],
+	    		        [-118,42]
 	    		    	]]
 	    		},
 	    		start: 0,
@@ -782,11 +782,11 @@ describe("When a GET request selects from a region exactly covering the 2x2 pixe
 		    	boundaryGeometry: {
     		    "type": "Polygon",
     		    "coordinates": [[
-	    		    	[-120,47],
-	    		        [-118,49],
-	    		        [-120,49],
-	    		        [-120,47],
-	    		        [-118,47]
+	    		    	[-120,43],
+	    		        [-118,41],
+	    		        [-120,41],
+	    		        [-120,43],
+	    		        [-118,43]
 	    		    	]]
 	    		},
 	    		start: 0,

@@ -155,7 +155,7 @@ describe("When a values POST request selects last pixel of each band in 5x5x5 da
 		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-119, 49]
+		    		coordinates: [-119, 41]
 		    	},
 	    		start: 0,
 	    		end: 4
@@ -192,7 +192,7 @@ describe("When a values POST request selects last pixel of last band in 5x5x5 da
 		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-119, 49]
+		    		coordinates: [-119, 41]
 		    	},
 	    		start: 4,
 	    		end: 4
@@ -228,7 +228,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube witho
 		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-119, 49]
+		    		coordinates: [-119, 41]
 		    	}
 		    }
 		});
@@ -264,7 +264,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-119, 49]
+		    		coordinates: [-119, 41]
 		    	},
 	    		start: 2
 		    }
@@ -300,7 +300,7 @@ describe("When a values POST request selects last pixel of 5x5x5 data cube and s
 		    	variableName: 'uint16_variable',
 		    	boundaryGeometry: {
 		    		type: 'Point',
-		    		coordinates: [-119, 49]
+		    		coordinates: [-119, 41]
 		    	},
 	    		end: 3
 		    }

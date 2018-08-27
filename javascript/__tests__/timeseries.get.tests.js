@@ -80,7 +80,7 @@ describe("When a values GET request selects last pixel of each band in 5x5x5 dat
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=49.0&start=0&end=4'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=0&end=4'
 		});
     });
 
@@ -106,7 +106,7 @@ describe("When a values GET request selects last pixel of last band in 5x5x5 dat
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=49.0&start=4&end=4'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=4&end=4'
 		});
     });
 
@@ -132,7 +132,7 @@ describe("When a values GET request selects last pixel of 5x5x5 data cube withou
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=49.0'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0'
 		});
     });
 
@@ -159,7 +159,7 @@ describe("When a values GET request selects last pixel of 5x5x5 data cube and sp
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=49.0&start=2'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=2'
 		});
     });
 
@@ -186,7 +186,7 @@ describe("When a values GET request selects last pixel of 5x5x5 data cube and sp
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=49.0&end=3'
+		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&end=3'
 		});
     });
 
