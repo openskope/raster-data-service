@@ -374,7 +374,7 @@ describe("When a values GET request selects pixels with NODATA in each band in y
 	beforeAll(async () => {
 		response = await callRESTService({
 		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/monthly_5x5x60_dataset/float32_variable?longitude=-119.0&latitude=48.0&start=0007-01&end=0007-06&timeResolution=month&timeZero=0002-07'
+		    path: timeseriesServiceBase + '/timeseries/monthly_5x5x60_dataset/float32_variable?longitude=-119.0&latitude=42.0&start=0007-01&end=0007-06&timeResolution=month&timeZero=0002-07'
 		});
     });
 
