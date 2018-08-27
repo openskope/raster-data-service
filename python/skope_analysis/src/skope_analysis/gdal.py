@@ -17,7 +17,7 @@ def create_dataset(filename, format, pixel_type,
     # set the spatial dimensions, resolution, and orientation of the dataset
     dataset.SetGeoTransform((origin_x, pixel_width, 0, origin_y, 0, -pixel_height))
 
-    # set the geospatial projection and coordinat system for the dataset
+    # set the geospatial projection and coordinate system for the dataset
     srs = osr.SpatialReference()
     srs.SetWellKnownGeogCS(coordinate_system)
     dataset.SetProjection(srs.ExportToWkt())
