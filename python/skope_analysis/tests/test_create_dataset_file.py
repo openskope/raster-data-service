@@ -10,14 +10,14 @@ import skope_analysis
 
 @pytest.fixture(scope='module')
 def dataset_directory(tmpdir_factory):
-    ''' create a temporary directory for storing the new dataset file '''
+    '''Create a temporary directory for storing the new dataset file.'''
     return tmpdir_factory.mktemp('dataset_directory')
 
 @pytest.fixture(scope='module')
 def path_to_dataset(dataset_directory):
-    ''' create a new dataset file and return its path'''
+    '''Create a new dataset file and return its path.'''
     path_to_dataset = str(dataset_directory) + 'test.tif'
-    skope_analysis.create_dataset_file(
+    skope_analysis.create_dataset(
         filename     = path_to_dataset,
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
@@ -34,34 +34,34 @@ def path_to_dataset(dataset_directory):
 
 @pytest.fixture(scope='module')
 def dataset(path_to_dataset):
-    ''' open the new dataset file with GDAL and return a gdal.Dataset object '''
-    return gdal.Open(path_to_dataset)
+    '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
+    return skope_analysis.open_dataset(path_to_dataset)
 
 @pytest.fixture(scope='module')
 def metadata(dataset):
-    ''' return the metadata dictionary for the new dataset '''
+    '''Return the metadata dictionary for the new dataset.'''
     return dataset.GetMetadata_Dict()
 
 @pytest.fixture(scope='module')
 def geotransform(dataset):
-    ''' return the geotransform array for the new dataset '''
+    '''Return the geotransform array for the new dataset.'''
     return dataset.GetGeoTransform()
 
 @pytest.fixture(scope='module')
 def affine_matrix(geotransform):
-    ''' return the affine matrix for the projection '''
+    '''Return the affine matrix for the projection.'''
     return affine.Affine.from_gdal(geotransform[0], geotransform[1],
                                    geotransform[2], geotransform[3],
                                    geotransform[4], geotransform[5])
 
 @pytest.fixture(scope='module')
 def inverse_affine(affine_matrix):
-    ''' return the inverse affine matrix for the projection '''
+    '''Return the inverse affine matrix for the projection.'''
     return ~affine_matrix
 
 @pytest.fixture(scope='module')
 def first_band(dataset):
-    ''' return band 1 of the new dataset '''
+    '''Return band 1 of the new dataset.'''
     return dataset.GetRasterBand(1) 
 
 ################################################################################
