@@ -1,5 +1,6 @@
 SKOPE Timeseries Service
 =========================
+[![Build Status](https://travis-ci.org/openskope/timeseries-service.svg?branch=master)](https://travis-ci.org/openskope/timeseries-service)
 
 This repository contains the source code for the microservice that produces
 time series displayed graphically in the SKOPE web application.  The
