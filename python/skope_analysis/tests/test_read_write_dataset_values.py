@@ -1,6 +1,5 @@
 import pytest
 import skope_analysis
-import math
 import numpy as np
 from osgeo import gdal
 
@@ -15,7 +14,7 @@ DATASET_ORIGIN_LONGITUDE     = -123
 DATASET_ORIGIN_LATITUDE      = 45
 DATASET_PIXEL_SIZE_LONGITUDE = 1.0
 DATASET_PIXEL_SIZE_LATITUDE  = 1.0
-DATASET_NODATA_VALUE         = math.nan
+DATASET_NODATA_VALUE         = float('nan')
 
 ################################################################################
 # Test fixtures run once for this module
