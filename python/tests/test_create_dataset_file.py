@@ -2,7 +2,7 @@ import pytest
 import os
 from osgeo import gdal
 import affine
-import skope_analysis
+import skope.analysis
 import numpy as np
 
 ################################################################################
@@ -30,7 +30,7 @@ def dataset_directory(tmpdir_factory):
 def path_to_dataset(dataset_directory):
     '''Create a new dataset file and return its path.'''
     path_to_dataset = str(dataset_directory) + 'test.tif'
-    skope_analysis.create_dataset(
+    skope.analysis.create_dataset(
         filename     = path_to_dataset,
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
@@ -48,7 +48,7 @@ def path_to_dataset(dataset_directory):
 @pytest.fixture(scope='module')
 def dataset(path_to_dataset):
     '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
-    return skope_analysis.open_dataset(path_to_dataset)
+    return skope.analysis.open_dataset(path_to_dataset)
 
 @pytest.fixture(scope='module')
 def metadata(dataset):
