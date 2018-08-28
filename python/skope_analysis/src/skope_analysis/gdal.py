@@ -29,6 +29,11 @@ def open_dataset(filename):
     '''Open an existing dataset file with GDAL and return a gdal.Dataset object.'''
     return gdal.Open(filename)
 
+def read_band(dataset, band):
+    '''Return pixel values of one band of a gdal.Dataset as a 2D numpy array.'''
+    selected_band = dataset.GetRasterBand(band)
+    return selected_band.ReadAsArray()
+
 def write_band(dataset, band, array, nodata):
     '''Copy a 2D numpy array to the specified band of a gdal.Dataset.'''
     selected_band = dataset.GetRasterBand(band)
