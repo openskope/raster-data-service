@@ -21,7 +21,7 @@ before_install:
   - sudo apt install -y python3-gdal
 
 install:
-  - pip install ./python/skope_analysis/
+  - pip install ./python/
 
 script: pytest -v
 
