@@ -1,1 +1,1 @@
-from skope.analysis.gdal import *
+from skope.analysis.gdal_wrappers import *

@@ -1,3 +1,4 @@
+import affine
 import osr
 import numpy as np
 from osgeo import gdal
@@ -54,3 +55,14 @@ def write_pixel(dataset, band, row, column, value):
     array[row, column] = value
     selected_band.WriteArray(array)
     selected_band.FlushCache()
+
+def get_affine(dataset):
+    geotransform = dataset.GetGeoTransform()
+    return affine.Affine.from_gdal(geotransform[0], geotransform[1],
+                                   geotransform[2], geotransform[3],
+                                   geotransform[4], geotransform[5])
+                                   
+def get_pixel_indices_for_point(dataset, longitude, latitude):
+    inverse_affine = ~get_affine(dataset)
+    pixel_x, pixel_y = inverse_affine * (longitude, latitude)
+    return int(pixel_x), int(pixel_y)
