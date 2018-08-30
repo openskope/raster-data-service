@@ -1,6 +1,7 @@
 import pytest
 import skope.analysis
 
+from affine import Affine
 from osgeo import gdal
 
 ################################################################################
@@ -46,7 +47,7 @@ def valid_gdal_dataset(valid_dataset_filename):
 
 @pytest.fixture(scope='module')
 def invalid_dataset_filename(test_dataset_filename):
-    '''Return a new gdal.Dataset instance'''
+    '''Return the path to an empty text file representing an invalid dataset file.'''
     invalid_dataset_filename = test_dataset_filename(__file__, ".txt")
     open(invalid_dataset_filename, 'w').close()
     return invalid_dataset_filename
@@ -62,7 +63,6 @@ def expected_file_not_found_error_message():
 @pytest.fixture(scope='module')
 def expected_invalid_dataset_file_error_message():
     return 'Invalid dataset file found at path'
-
 
 def test_when_constructor_argument_is_none_a_datatype_exception_is_raised(expected_type_error_message):
     with pytest.raises(TypeError, match=expected_type_error_message):
@@ -87,6 +87,7 @@ def test_when_constructor_argument_is_a_gdal_dataset_attributes_are_correct(vali
     assert raster_dataset.origin_y == DATASET_ORIGIN_LATITUDE
     assert raster_dataset.pixel_size_x == DATASET_PIXEL_SIZE_LONGITUDE
     assert raster_dataset.pixel_size_y == DATASET_PIXEL_SIZE_LATITUDE
+    assert raster_dataset.affine == Affine(1.0, 0.0, -123.0, 0.0, -2.0, 45.0)
 
 def test_when_constructor_argument_is_path_to_dataset_attributes_are_correct(valid_dataset_filename):
     raster_dataset = skope.analysis.RasterDataset(valid_dataset_filename)
@@ -98,6 +99,7 @@ def test_when_constructor_argument_is_path_to_dataset_attributes_are_correct(val
     assert raster_dataset.origin_y == DATASET_ORIGIN_LATITUDE
     assert raster_dataset.pixel_size_x == DATASET_PIXEL_SIZE_LONGITUDE
     assert raster_dataset.pixel_size_y == DATASET_PIXEL_SIZE_LATITUDE
+    assert raster_dataset.affine == Affine(1.0, 0.0, -123.0, 0.0, -2.0, 45.0)
 
 def test_when_constructor_argument_is_path_to_invalid_dataset_file_an_exception_is_raised(invalid_dataset_filename, expected_invalid_dataset_file_error_message):
     with pytest.raises(ValueError, match=expected_invalid_dataset_file_error_message):
