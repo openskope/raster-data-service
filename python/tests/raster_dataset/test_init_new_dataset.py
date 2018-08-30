@@ -21,16 +21,12 @@ DATASET_PIXEL_SIZE_LATITUDE  = 2.0
 # Test fixtures run once for this module
 ################################################################################
 
-@pytest.fixture(scope='module')
-def dataset_directory(tmpdir_factory):
-    '''Create a temporary directory for storing the new dataset file.'''
-    return tmpdir_factory.mktemp('dataset_directory')
 
 @pytest.fixture(scope='module')
-def raster_dataset(dataset_directory):
+def raster_dataset(test_dataset_filename):
     '''Return a new RasterDataset.'''
     return skope.analysis.RasterDataset(
-        filename     = str(dataset_directory) + 'test.tif',
+        filename     = test_dataset_filename(__file__),
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
         rows         = DATASET_ROW_COUNT, 

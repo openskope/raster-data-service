@@ -22,14 +22,9 @@ DATASET_PIXEL_SIZE_LATITUDE  = 2.0
 ################################################################################
 
 @pytest.fixture(scope='module')
-def dataset_directory(tmpdir_factory):
-    '''Create a temporary directory for storing the new dataset file.'''
-    return tmpdir_factory.mktemp('dataset_directory')
-
-@pytest.fixture(scope='module')
-def path_to_dataset(dataset_directory):
+def path_to_dataset(test_dataset_filename):
     '''Create a new dataset file and return its path.'''
-    path_to_dataset = str(dataset_directory) + 'test.tif'
+    path_to_dataset = test_dataset_filename(__file__)
     skope.analysis.create_dataset(
         filename     = path_to_dataset,
         format       = 'GTiff',

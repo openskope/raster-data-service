@@ -28,10 +28,10 @@ def dataset_directory(tmpdir_factory):
     return tmpdir_factory.mktemp('dataset_directory')
 
 @pytest.fixture(scope='module')
-def dataset(dataset_directory):
+def dataset(test_dataset_filename):
     '''Create a new dataset file and return its path.'''
     dataset = skope.analysis.create_dataset(
-        filename          = str(dataset_directory) + 'test.tif',
+        filename          = test_dataset_filename(__file__),
         format            = FILE_FORMAT,
         pixel_type        = DATA_TYPE, 
         rows              = ROW_COUNT, 

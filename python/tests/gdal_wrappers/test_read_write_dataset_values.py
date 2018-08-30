@@ -1,6 +1,7 @@
+import numpy as np
 import pytest
 import skope.analysis
-import numpy as np
+
 from osgeo import gdal
 
 ################################################################################
@@ -21,11 +22,6 @@ DATASET_NODATA_VALUE         = float('nan')
 ################################################################################
 
 @pytest.fixture(scope='module')
-def dataset_directory(tmpdir_factory):
-    '''Create a temporary directory for storing the new dataset file.'''
-    return tmpdir_factory.mktemp('dataset_directory')
-
-@pytest.fixture(scope='module')
 def array_assigned_to_band_1():
     return np.array([[1,2],[3,4]])
 
@@ -34,13 +30,13 @@ def array_assigned_to_band_2():
     return np.array([[11,12],[13,14]])
 
 @pytest.fixture(scope='module')
-def dataset(dataset_directory, array_assigned_to_band_1, array_assigned_to_band_2):
+def dataset(test_dataset_filename, array_assigned_to_band_1, array_assigned_to_band_2):
     '''Create a new dataset, and set its values using write_band() and 
     write_pixel() functions.'''
 
     # create the new dataset
     dataset = skope.analysis.create_dataset(
-        filename     = str(dataset_directory) + 'test.tif',
+        filename     = test_dataset_filename(__file__),
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
         rows         = DATASET_ROW_COUNT, 
