@@ -21,11 +21,10 @@ DATASET_PIXEL_SIZE_LATITUDE  = 2.0
 # Test fixtures run once for this module
 ################################################################################
 
-
 @pytest.fixture(scope='module')
 def raster_dataset(test_dataset_filename):
     '''Return a new RasterDataset.'''
-    return skope.analysis.RasterDataset(
+    return skope.analysis.RasterDataset.new(
         filename     = test_dataset_filename(__file__),
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
