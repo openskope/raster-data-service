@@ -5,6 +5,38 @@ import os
 from osgeo import gdal
 import skope.analysis
 
+def get_gdal_dataset_for_argument(dataset):
+    '''Examine the dataset argument and return, as a tuple, the corresponding gdal.Dataset object
+    and the path to the dataset file if known.'''
+
+    # if the argument is a gdal.Dataset instance return it along with a null dataset path
+    if isinstance(dataset, gdal.Dataset):
+        gdal_dataset = dataset
+        gdal_dataset_path = None
+
+    # if the argument is a string, interpret it as the path to the datafile,
+    # open the file with GDAL, and return the gdal.Dataset instance for it with the path
+    elif isinstance(dataset, str):
+
+        if (not os.path.isfile(dataset)):
+            raise FileNotFoundError('Dataset file not found at path ' + dataset)
+
+        gdal_dataset_path =  dataset
+        gdal_dataset = None
+        try:
+            gdal_dataset = gdal.Open(dataset)
+        except:
+            pass
+        finally:
+            if (gdal_dataset is None):
+                raise ValueError('Invalid dataset file found at path ' + dataset)
+
+    # otherwise raise an argument TypeError exception
+    else:
+        raise TypeError('Expected a gdal.Dataset object or a string representing the path to a datafile.')
+
+    return  gdal_dataset, gdal_dataset_path
+
 class RasterDataset:
 
     @staticmethod
@@ -20,31 +52,7 @@ class RasterDataset:
 
     def __init__(self, dataset):
 
-        # if the constructor argument is a gdal.Dataset instance simply store it
-        if isinstance(dataset, gdal.Dataset):
-            self.filename = None
-            self.gdal_dataset = dataset
-
-        # if the argument is a string, interpret it as the path to the datafile,
-        # open the file with GDAL, and store the gdal.Dataset instance for it
-        elif isinstance(dataset, str):
-
-            if (not os.path.isfile(dataset)):
-                raise FileNotFoundError('Dataset file not found at path ' + dataset)
-
-            self.gdal_dataset = None
-            try:
-                self.gdal_dataset = gdal.Open(dataset)
-            except:
-                pass
-
-            if (self.gdal_dataset is None):
-                raise ValueError('Invalid dataset file found at path ' + dataset)
-
-            self.filename = dataset
-        # otherwise raise an exception
-        else:
-            raise TypeError('Expected a gdal.Dataset object or a string representing the path to a datafile.')
+        self.gdal_dataset, self.filename = get_gdal_dataset_for_argument(dataset)
 
         # expose key metadata as public attributes
         self.row_count = self.gdal_dataset.RasterYSize
