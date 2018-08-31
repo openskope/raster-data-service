@@ -70,6 +70,10 @@ class RasterDataset:
     def center(self):
         return self.affine * (self.cols/2, self.rows/2)
 
+    def read_pixel(self, row, column, band):
+        selected_band = self.gdal_dataset.GetRasterBand(band)
+        pixel_array = selected_band.ReadAsArray()
+        return pixel_array[row, column]
 
 ################################################################################
 # Private helper methods
