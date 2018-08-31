@@ -5,7 +5,7 @@ import skope.analysis
 from osgeo import gdal
 
 ################################################################################
-# Constants defined for this module.
+# Module-scoped constants defining properties of the test dataset.
 ################################################################################
 
 DATASET_ROW_COUNT            = 2
@@ -13,12 +13,12 @@ DATASET_COLUMN_COUNT         = 2
 DATASET_BAND_COUNT           = 2
 DATASET_ORIGIN_LONGITUDE     = -123
 DATASET_ORIGIN_LATITUDE      = 45
-DATASET_PIXEL_SIZE_LONGITUDE = 1.0
-DATASET_PIXEL_SIZE_LATITUDE  = 1.0
+DATASET_PIXEL_WIDTH          = 1.0
+DATASET_PIXEL_HEIGHT         = 1.0
 DATASET_NODATA_VALUE         = float('nan')
 
 ################################################################################
-# Test fixtures run once for this module
+# Test fixtures run once for this module.
 ################################################################################
 
 @pytest.fixture(scope='module')
@@ -42,10 +42,10 @@ def dataset(test_dataset_filename, array_assigned_to_band_1, array_assigned_to_b
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 
         bands        = DATASET_BAND_COUNT,
-        origin_x     = DATASET_ORIGIN_LONGITUDE,
-        origin_y     = DATASET_ORIGIN_LATITUDE,
-        pixel_width  = DATASET_PIXEL_SIZE_LONGITUDE,
-        pixel_height = DATASET_PIXEL_SIZE_LATITUDE,
+        origin_long  = DATASET_ORIGIN_LONGITUDE,
+        origin_lat   = DATASET_ORIGIN_LATITUDE,
+        pixel_width  = DATASET_PIXEL_WIDTH,
+        pixel_height = DATASET_PIXEL_HEIGHT,
         coordinate_system='WGS84'
     )
 
@@ -61,7 +61,7 @@ def dataset(test_dataset_filename, array_assigned_to_band_1, array_assigned_to_b
     return dataset
 
 ################################################################################
-# Tests of dataset read and write functions
+# Tests of dataset read and write functions.
 # ################################################################################
 
 def test_write_band_sets_assigns_expected_pixel_values(dataset, array_assigned_to_band_1):

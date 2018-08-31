@@ -5,7 +5,7 @@ from osgeo import gdal
 
 def create_dataset(filename, format, pixel_type, 
                    rows, cols, bands, 
-                   origin_x, origin_y, 
+                   origin_long, origin_lat, 
                    pixel_width, pixel_height, 
                    coordinate_system='WGS84'):
     '''Create a new GDAL dataset and datafile, returning the dataset object.'''
@@ -16,7 +16,7 @@ def create_dataset(filename, format, pixel_type,
     dataset = driver.Create(filename, cols, rows, bands, pixel_type)
     
     # set the spatial dimensions, resolution, and orientation of the dataset
-    dataset.SetGeoTransform((origin_x, pixel_width, 0, origin_y, 0, -pixel_height))
+    dataset.SetGeoTransform((origin_long, pixel_width, 0, origin_lat, 0, -pixel_height))
 
     # set the geospatial projection and coordinate system for the dataset
     srs = osr.SpatialReference()
@@ -61,8 +61,3 @@ def get_affine(dataset):
     return affine.Affine.from_gdal(geotransform[0], geotransform[1],
                                    geotransform[2], geotransform[3],
                                    geotransform[4], geotransform[5])
-                                   
-def get_pixel_indices_for_point(dataset, longitude, latitude):
-    inverse_affine = ~get_affine(dataset)
-    pixel_x, pixel_y = inverse_affine * (longitude, latitude)
-    return int(pixel_x), int(pixel_y)

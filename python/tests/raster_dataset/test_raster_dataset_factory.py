@@ -6,7 +6,7 @@ import skope.analysis
 import numpy as np
 
 ################################################################################
-# Constants defined for this module.
+# Module-scoped constants defining properties of the test dataset.
 ################################################################################
 
 DATASET_ROW_COUNT            = 4
@@ -14,16 +14,16 @@ DATASET_COLUMN_COUNT         = 5
 DATASET_BAND_COUNT           = 6
 DATASET_ORIGIN_LONGITUDE     = -123
 DATASET_ORIGIN_LATITUDE      = 45
-DATASET_PIXEL_SIZE_LONGITUDE = 1.0
-DATASET_PIXEL_SIZE_LATITUDE  = 2.0
+DATASET_PIXEL_WIDTH          = 1.0
+DATASET_PIXEL_HEIGHT         = 2.0
 
 ################################################################################
-# Test fixtures run once for this module
+# Test fixtures run once for this module.
 ################################################################################
 
 @pytest.fixture(scope='module')
 def raster_dataset(test_dataset_filename):
-    '''Return a new RasterDataset.'''
+    '''Return a new RasterDataset built by the factory function.'''
     return skope.analysis.RasterDataset.new(
         filename     = test_dataset_filename(__file__),
         format       = 'GTiff',
@@ -31,10 +31,10 @@ def raster_dataset(test_dataset_filename):
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 
         bands        = DATASET_BAND_COUNT,
-        origin_x     = DATASET_ORIGIN_LONGITUDE,
-        origin_y     = DATASET_ORIGIN_LATITUDE,
-        pixel_width  = DATASET_PIXEL_SIZE_LONGITUDE,
-        pixel_height = DATASET_PIXEL_SIZE_LATITUDE,
+        origin_long  = DATASET_ORIGIN_LONGITUDE,
+        origin_lat   = DATASET_ORIGIN_LATITUDE,
+        pixel_width  = DATASET_PIXEL_WIDTH,
+        pixel_height = DATASET_PIXEL_HEIGHT,
         coordinate_system='WGS84'
     )
 
@@ -59,7 +59,7 @@ def first_band(gdal_dataset):
     return gdal_dataset.GetRasterBand(1)
 
 ################################################################################
-# Tests of the results of using the create_dataset_file() function
+# Tests of the results of using the RasterDataset factory function.
 ################################################################################
 
 def test_fixture_is_instance_of_raster_dataset(raster_dataset):
@@ -84,10 +84,10 @@ def test_dataset_band_count_is_6(gdal_dataset):
     assert gdal_dataset.RasterCount == DATASET_BAND_COUNT
 
 def test_pixel_width_is_1(geotransform):
-    assert geotransform[1] == DATASET_PIXEL_SIZE_LONGITUDE
+    assert geotransform[1] == DATASET_PIXEL_WIDTH
 
 def test_pixel_height_is_2(geotransform):
-    assert geotransform[5] == -DATASET_PIXEL_SIZE_LATITUDE
+    assert geotransform[5] == -DATASET_PIXEL_HEIGHT
 
 def test_geotransform_is_north_up(geotransform):
     assert (geotransform[2],geotransform[4]) == (0,0)

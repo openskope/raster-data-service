@@ -5,15 +5,18 @@ import os
 from osgeo import gdal
 import skope.analysis
 
+################################################################################
+# Class definition for RasterDataset
+################################################################################
 
 class RasterDataset:
 
     @staticmethod
-    def new(filename, format, pixel_type, rows, cols, bands, origin_x, origin_y,
+    def new(filename, format, pixel_type, rows, cols, bands, origin_long, origin_lat,
             pixel_width, pixel_height, coordinate_system='WGS84'):
 
         skope.analysis.create_dataset(
-            filename, format, pixel_type, rows, cols, bands, origin_x, origin_y,
+            filename, format, pixel_type, rows, cols, bands, origin_long, origin_lat,
             pixel_width, pixel_height, coordinate_system
         )
 
@@ -24,20 +27,20 @@ class RasterDataset:
         self.gdal_dataset, self.filename = _get_gdal_dataset_for_argument(dataset)
 
         # expose key metadata as public attributes
-        self.row_count = self.gdal_dataset.RasterYSize
-        self.column_count = self.gdal_dataset.RasterXSize
-        self.band_count = self.gdal_dataset.RasterCount
+        self.rows = self.gdal_dataset.RasterYSize
+        self.cols = self.gdal_dataset.RasterXSize
+        self.bands = self.gdal_dataset.RasterCount
         self.geotransform = self.gdal_dataset.GetGeoTransform()
-        self.origin_x = self.geotransform[0]
-        self.origin_y = self.geotransform[3]
+        self.origin_long = self.geotransform[0]
+        self.origin_lat = self.geotransform[3]
         self.pixel_size_x = self.geotransform[1]
         self.pixel_size_y = -self.geotransform[5]
         self.affine = skope.analysis.get_affine(self.gdal_dataset)
         self.inverse_affine = ~self.affine
 
     def pixel_in_coverage(self, pixel_x, pixel_y):
-        return (pixel_x >= 0 and pixel_x <= self.column_count and
-                pixel_y >= 0 and pixel_y <= self.row_count)
+        return (pixel_x >= 0 and pixel_x <= self.cols and
+                pixel_y >= 0 and pixel_y <= self.rows)
 
     def pixel_for(self, longitude, latitude):
         pixel_fractional_x, pixel_fractional_y = self.inverse_affine * (longitude, latitude)
@@ -56,18 +59,21 @@ class RasterDataset:
         return self.affine * (0,0)
 
     def northeast_corner(self):
-        return self.affine * (self.column_count,0)
+        return self.affine * (self.cols, 0)
 
     def southeast_corner(self):
-        return self.affine * (self.column_count,self.row_count)
+        return self.affine * (self.cols, self.rows)
 
     def southwest_corner(self):
-        return self.affine * (0, self.row_count)
+        return self.affine * (0, self.rows)
 
     def center(self):
-        return self.affine * (self.column_count/2,self.row_count/2)
+        return self.affine * (self.cols/2, self.rows/2)
 
+
+################################################################################
 # Private helper methods
+################################################################################
 
 def _get_gdal_dataset_for_argument(dataset):
     '''Examine the dataset argument and return, as a tuple, the corresponding gdal.Dataset object

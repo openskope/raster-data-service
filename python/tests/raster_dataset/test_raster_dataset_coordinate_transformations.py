@@ -6,7 +6,7 @@ import skope.analysis
 import numpy as np
 
 ################################################################################
-# Constants defined for this module.
+# Module-scoped constants defining properties of the test dataset.
 ################################################################################
 
 DATASET_ROW_COUNT            = 4
@@ -14,11 +14,11 @@ DATASET_COLUMN_COUNT         = 5
 DATASET_BAND_COUNT           = 6
 DATASET_ORIGIN_LONGITUDE     = -123
 DATASET_ORIGIN_LATITUDE      = 45
-DATASET_PIXEL_SIZE_LONGITUDE = 1.0
-DATASET_PIXEL_SIZE_LATITUDE  = 2.0
+DATASET_PIXEL_WIDTH          = 1.0
+DATASET_PIXEL_HEIGHT         = 2.0
 
 ################################################################################
-# Test fixtures run once for this module
+# Test fixtures run once for this module.
 ################################################################################
 
 @pytest.fixture(scope='module')
@@ -31,12 +31,17 @@ def raster_dataset(test_dataset_filename):
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 
         bands        = DATASET_BAND_COUNT,
-        origin_x     = DATASET_ORIGIN_LONGITUDE,
-        origin_y     = DATASET_ORIGIN_LATITUDE,
-        pixel_width  = DATASET_PIXEL_SIZE_LONGITUDE,
-        pixel_height = DATASET_PIXEL_SIZE_LATITUDE,
+        origin_long  = DATASET_ORIGIN_LONGITUDE,
+        origin_lat   = DATASET_ORIGIN_LATITUDE,
+        pixel_width  = DATASET_PIXEL_WIDTH,
+        pixel_height = DATASET_PIXEL_HEIGHT,
         coordinate_system='WGS84'
     )
+
+
+################################################################################
+# Tests of the RasterDataset coordinate transformation methods.
+################################################################################
 
 def test_pixel_size(raster_dataset):
     assert raster_dataset.pixel_size() == (1,2)
