@@ -84,6 +84,7 @@ def test_when_constructor_argument_is_a_gdal_dataset_attributes_are_correct(vali
     raster_dataset = skope.analysis.RasterDataset(valid_gdal_dataset)
     assert raster_dataset.filename == None
     assert raster_dataset.gdal_dataset == valid_gdal_dataset
+    assert raster_dataset.shape == (DATASET_BAND_COUNT, DATASET_ROW_COUNT, DATASET_COLUMN_COUNT)
     assert raster_dataset.rows == DATASET_ROW_COUNT
     assert raster_dataset.cols == DATASET_COLUMN_COUNT
     assert raster_dataset.bands == DATASET_BAND_COUNT
@@ -96,6 +97,7 @@ def test_when_constructor_argument_is_a_gdal_dataset_attributes_are_correct(vali
 def test_when_constructor_argument_is_path_to_dataset_attributes_are_correct(valid_dataset_filename):
     raster_dataset = skope.analysis.RasterDataset(valid_dataset_filename)
     assert raster_dataset.filename == valid_dataset_filename
+    assert raster_dataset.shape == (DATASET_BAND_COUNT, DATASET_ROW_COUNT, DATASET_COLUMN_COUNT)
     assert raster_dataset.rows == DATASET_ROW_COUNT
     assert raster_dataset.cols == DATASET_COLUMN_COUNT
     assert raster_dataset.bands == DATASET_BAND_COUNT

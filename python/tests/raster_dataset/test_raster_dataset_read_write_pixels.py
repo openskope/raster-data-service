@@ -70,3 +70,11 @@ def test_read_pixel_returns_value_of_each_pixel_in_dataset(raster_dataset):
     assert raster_dataset.read_pixel(row=0, column=1, band=2) == 12
     assert raster_dataset.read_pixel(row=1, column=0, band=2) == 13
     assert raster_dataset.read_pixel(row=1, column=1, band=2) == 14
+
+def test_read_pixel_at_point_returns_value_at_0_0_for_origin(raster_dataset):
+    assert raster_dataset.read_pixel_at_point(-123, 45, band=1) == 1
+    assert raster_dataset.read_pixel_at_point(-123, 45, band=2) == 11
+
+def test_read_pixel_at_point_returns_value_at_1_1_near_southeast_corner(raster_dataset):
+    assert raster_dataset.read_pixel_at_point(-121.001, 43.001, band=1) == 4
+    assert raster_dataset.read_pixel_at_point(-121.001, 43.001, band=2) == 14

@@ -44,25 +44,25 @@ def raster_dataset(test_dataset_filename):
 ################################################################################
 
 def test_pixel_size(raster_dataset):
-    assert raster_dataset.pixel_size() == (1,2)
+    assert raster_dataset.pixel_size == (1,2)
 
 def test_origin(raster_dataset):
-    assert raster_dataset.origin() == (-123, 45)
+    assert raster_dataset.origin == (-123, 45)
 
 def test_northwest_corner(raster_dataset):
-    assert raster_dataset.northwest_corner() == (-123, 45)
+    assert raster_dataset.northwest_corner == (-123, 45)
 
 def test_northeast_corner(raster_dataset):
-    assert raster_dataset.northeast_corner() == (-118, 45)
+    assert raster_dataset.northeast_corner == (-118, 45)
 
 def test_southeast_corner(raster_dataset):
-    assert raster_dataset.southeast_corner() == (-118, 37)
+    assert raster_dataset.southeast_corner == (-118, 37)
 
 def test_southwest_corner(raster_dataset):
-    assert raster_dataset.southwest_corner() == (-123, 37)
+    assert raster_dataset.southwest_corner == (-123, 37)
 
 def test_center(raster_dataset):
-    assert raster_dataset.center() == (-120.5, 41)
+    assert raster_dataset.center == (-120.5, 41)
 
 def test_pixel_for_origin_is_0_0(raster_dataset):
     assert raster_dataset.pixel_for(-123,45) == (0,0)
