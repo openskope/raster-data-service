@@ -8,9 +8,9 @@ from osgeo import gdal
 # Module-scoped constants defining properties of the test dataset.
 ################################################################################
 
-DATASET_ROW_COUNT            = 2
-DATASET_COLUMN_COUNT         = 3
 DATASET_BAND_COUNT           = 4
+DATASET_ROW_COUNT            = 3
+DATASET_COLUMN_COUNT         = 2
 DATASET_ORIGIN_LONGITUDE     = -123
 DATASET_ORIGIN_LATITUDE      = 45
 DATASET_PIXEL_WIDTH          = 1.0
@@ -80,32 +80,46 @@ def test_when_constructor_argument_is_invalid_string_an_exception_is_raised(expe
     with pytest.raises(FileNotFoundError, match=expected_file_not_found_error_message):
         skope.analysis.RasterDataset("path_to_nonexistent_file")
 
-def test_when_constructor_argument_is_a_gdal_dataset_attributes_are_correct(valid_gdal_dataset):
+def test_when_constructor_argument_is_a_gdal_dataset_properties_are_correct(valid_gdal_dataset):
     raster_dataset = skope.analysis.RasterDataset(valid_gdal_dataset)
     assert raster_dataset.filename == None
     assert raster_dataset.gdal_dataset == valid_gdal_dataset
-    assert raster_dataset.shape == (DATASET_BAND_COUNT, DATASET_ROW_COUNT, DATASET_COLUMN_COUNT)
-    assert raster_dataset.rows == DATASET_ROW_COUNT
-    assert raster_dataset.cols == DATASET_COLUMN_COUNT
-    assert raster_dataset.bands == DATASET_BAND_COUNT
-    assert raster_dataset.origin_long == DATASET_ORIGIN_LONGITUDE
-    assert raster_dataset.origin_lat == DATASET_ORIGIN_LATITUDE
-    assert raster_dataset.pixel_size_x == DATASET_PIXEL_WIDTH
-    assert raster_dataset.pixel_size_y == DATASET_PIXEL_HEIGHT
+    assert raster_dataset.shape == (4, 3, 2)
+    assert raster_dataset.bands == 4
+    assert raster_dataset.rows == 3
+    assert raster_dataset.cols == 2
     assert raster_dataset.affine == Affine(1.0, 0.0, -123.0, 0.0, -2.0, 45.0)
+    assert raster_dataset.pixel_size == (1.0, 2.0)
+    assert raster_dataset.pixel_size_x == 1.0
+    assert raster_dataset.pixel_size_y == 2.0
+    assert raster_dataset.origin == (-123, 45)
+    assert raster_dataset.origin_long == -123
+    assert raster_dataset.origin_lat == 45
+    assert raster_dataset.northwest_corner == (-123, 45)
+    assert raster_dataset.southwest_corner == (-123, 39)
+    assert raster_dataset.northeast_corner == (-121, 45)
+    assert raster_dataset.southeast_corner == (-121, 39)
+    assert raster_dataset.center == (-122, 42)
 
-def test_when_constructor_argument_is_path_to_dataset_attributes_are_correct(valid_dataset_filename):
+def test_when_constructor_argument_is_path_to_dataset_properties_are_correct(valid_dataset_filename):
     raster_dataset = skope.analysis.RasterDataset(valid_dataset_filename)
     assert raster_dataset.filename == valid_dataset_filename
-    assert raster_dataset.shape == (DATASET_BAND_COUNT, DATASET_ROW_COUNT, DATASET_COLUMN_COUNT)
-    assert raster_dataset.rows == DATASET_ROW_COUNT
-    assert raster_dataset.cols == DATASET_COLUMN_COUNT
-    assert raster_dataset.bands == DATASET_BAND_COUNT
-    assert raster_dataset.origin_long == DATASET_ORIGIN_LONGITUDE
-    assert raster_dataset.origin_lat == DATASET_ORIGIN_LATITUDE
-    assert raster_dataset.pixel_size_x == DATASET_PIXEL_WIDTH
-    assert raster_dataset.pixel_size_y == DATASET_PIXEL_HEIGHT
+    assert raster_dataset.shape == (4, 3, 2)
+    assert raster_dataset.bands == 4
+    assert raster_dataset.rows == 3
+    assert raster_dataset.cols == 2
     assert raster_dataset.affine == Affine(1.0, 0.0, -123.0, 0.0, -2.0, 45.0)
+    assert raster_dataset.pixel_size == (1.0, 2.0)
+    assert raster_dataset.pixel_size_x == 1.0
+    assert raster_dataset.pixel_size_y == 2.0
+    assert raster_dataset.origin == (-123, 45)
+    assert raster_dataset.origin_long == -123
+    assert raster_dataset.origin_lat == 45
+    assert raster_dataset.northwest_corner == (-123, 45)
+    assert raster_dataset.southwest_corner == (-123, 39)
+    assert raster_dataset.northeast_corner == (-121, 45)
+    assert raster_dataset.southeast_corner == (-121, 39)
+    assert raster_dataset.center == (-122, 42)
 
 def test_when_constructor_argument_is_path_to_invalid_dataset_file_an_exception_is_raised(invalid_dataset_filename, expected_invalid_dataset_file_error_message):
     with pytest.raises(ValueError, match=expected_invalid_dataset_file_error_message):
