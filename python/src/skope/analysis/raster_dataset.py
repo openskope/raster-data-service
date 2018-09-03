@@ -83,30 +83,30 @@ class RasterDataset:
 
     @property
     def northwest_corner(self):
-        return self.affine * (0,0)
+        return self._affine * (0,0)
 
     @property
     def northeast_corner(self):
-        return self.affine * (self.cols, 0)
+        return self._affine * (self.cols, 0)
 
     @property
     def southeast_corner(self):
-        return self.affine * (self.cols, self.rows)
+        return self._affine * (self.cols, self.rows)
 
     @property
     def southwest_corner(self):
-        return self.affine * (0, self.rows)
+        return self._affine * (0, self.rows)
 
     @property
     def center(self):
-        return self.affine * (self.cols/2, self.rows/2)
+        return self._affine * (self.cols/2, self.rows/2)
 
     def pixel_in_coverage(self, pixel_x, pixel_y):
         return (pixel_x >= 0 and pixel_x <= self.cols and
                 pixel_y >= 0 and pixel_y <= self.rows)
 
     def pixel_for(self, longitude, latitude):
-        pixel_fractional_x, pixel_fractional_y = self.inverse_affine * (longitude, latitude)
+        pixel_fractional_x, pixel_fractional_y = self._inverse_affine * (longitude, latitude)
         if self.pixel_in_coverage(pixel_fractional_x, pixel_fractional_y):
             return int(pixel_fractional_x), int(pixel_fractional_y)
         else:
