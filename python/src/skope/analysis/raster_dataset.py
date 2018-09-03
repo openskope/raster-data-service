@@ -123,7 +123,14 @@ class RasterDataset:
 
     def series_at_pixel(self, row, column):
         series = np.empty(self.bands)
-        for i in range(0,self.bands):
+        for i in range(0, self.bands):
+            series[i] = self.value_at_pixel(row, column, i+1)
+        return series
+
+    def series_at_point(self, longitude, latitude):
+        series = np.empty(self.bands)
+        row, column = self.pixel_at_point(longitude, latitude)
+        for i in range(0, self.bands):
             series[i] = self.value_at_pixel(row, column, i+1)
         return series
 

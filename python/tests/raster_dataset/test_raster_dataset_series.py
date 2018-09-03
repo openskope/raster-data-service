@@ -58,7 +58,7 @@ def raster_dataset(test_dataset_filename, array_assigned_to_band_1, array_assign
 
 
 ################################################################################
-# Tests of raster dataset get series function.
+# Tests of raster dataset series functions.
 ################################################################################
 
 def test_series_returns_numpy_ndarray(raster_dataset):
@@ -83,3 +83,15 @@ def test_series_at_pixel_1_0_is_correct(raster_dataset):
 
 def test_series_at_pixel_1_1_is_correct(raster_dataset):
     assert raster_dataset.series_at_pixel(1,1).tolist() == [4,14]
+
+def test_series_at_point_pixel_0_0_is_correct(raster_dataset):
+    assert raster_dataset.series_at_point(-123,45).tolist() == [1,11]
+
+def test_series_at_point_in_pixel_0_1_is_correct(raster_dataset):
+    assert raster_dataset.series_at_point(-123,44).tolist() == [2,12]
+
+def test_series_at_point_in_pixel_1_0_is_correct(raster_dataset):
+    assert raster_dataset.series_at_point(-122,45).tolist() == [3,13]
+
+def test_series_at_point_in_pixel_1_1_is_correct(raster_dataset):
+    assert raster_dataset.series_at_point(-122,44).tolist() == [4,14]
