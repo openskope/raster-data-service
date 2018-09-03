@@ -105,21 +105,27 @@ class RasterDataset:
         return (pixel_x >= 0 and pixel_x <= self.cols and
                 pixel_y >= 0 and pixel_y <= self.rows)
 
-    def pixel_for(self, longitude, latitude):
+    def pixel_at_point(self, longitude, latitude):
         pixel_fractional_x, pixel_fractional_y = self._inverse_affine * (longitude, latitude)
         if self.pixel_in_coverage(pixel_fractional_x, pixel_fractional_y):
             return int(pixel_fractional_x), int(pixel_fractional_y)
         else:
             return None
 
-    def read_pixel(self, row, column, band):
+    def value_at_pixel(self, row, column, band):
         selected_band = self.gdal_dataset.GetRasterBand(band)
         pixel_array = selected_band.ReadAsArray()
         return pixel_array[row, column]
 
-    def read_pixel_at_point(self, longitude, latitude, band):
-        pixel_x, pixel_y = self.pixel_for(longitude, latitude)
-        return self.read_pixel(pixel_x, pixel_y, band)
+    def value_at_point(self, longitude, latitude, band):
+        pixel_x, pixel_y = self.pixel_at_point(longitude, latitude)
+        return self.value_at_pixel(pixel_x, pixel_y, band)
+
+    def series_at_pixel(self, row, column):
+        series = np.empty(self.bands)
+        for i in range(0,self.bands):
+            series[i] = self.value_at_pixel(row, column, i+1)
+        return series
 
 ################################################################################
 # Private helper methods

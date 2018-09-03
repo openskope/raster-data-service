@@ -64,23 +64,23 @@ def test_southwest_corner(raster_dataset):
 def test_center(raster_dataset):
     assert raster_dataset.center == (-120.5, 41)
 
-def test_pixel_for_origin_is_0_0(raster_dataset):
-    assert raster_dataset.pixel_for(-123,45) == (0,0)
+def test_pixel_at_origin_is_0_0(raster_dataset):
+    assert raster_dataset.pixel_at_point(-123,45) == (0,0)
 
-def test_pixel_for_point_at_center_of_northwest_pixel_is_0_0(raster_dataset):
-    assert raster_dataset.pixel_for(-122.5,44) == (0,0)
+def test_pixel_at_point_at_center_of_northwest_pixel_is_0_0(raster_dataset):
+    assert raster_dataset.pixel_at_point(-122.5,44) == (0,0)
 
-def test_pixel_for_point_just_northwest_of_southeast_corner_of_northwest_pixel_is_0_0(raster_dataset):
-    assert raster_dataset.pixel_for(-122.001,43.001) == (0,0)
+def test_pixel_at_point_just_northwest_of_southeast_corner_of_northwest_pixel_is_0_0(raster_dataset):
+    assert raster_dataset.pixel_at_point(-122.001,43.001) == (0,0)
 
-def test_pixel_for_point_just_southeast_of_southwest_corner_of_northwest_pixel_is_0_0(raster_dataset):
-    assert raster_dataset.pixel_for(-121.999,42.999) == (1,1)
+def test_pixel_at_point_just_southeast_of_southwest_corner_of_northwest_pixel_is_0_0(raster_dataset):
+    assert raster_dataset.pixel_at_point(-121.999,42.999) == (1,1)
 
-def test_pixel_for_point_just_northwest_of_northwest_corner_of_northwest_pixel_is_outside_coverage(raster_dataset):
-    assert raster_dataset.pixel_for(-123.001,45.001) == None
+def test_pixel_at_point_just_northwest_of_northwest_corner_of_northwest_pixel_is_outside_coverage(raster_dataset):
+    assert raster_dataset.pixel_at_point(-123.001,45.001) == None
 
-def test_pixel_for_point_just_northwest_of_southeast_corner_of_southeast_pixel_is_boottom_right_pixel(raster_dataset):
-    assert raster_dataset.pixel_for(-118.001, 37.001) == (4,3)
+def test_pixel_at_point_just_northwest_of_southeast_corner_of_southeast_pixel_is_boottom_right_pixel(raster_dataset):
+    assert raster_dataset.pixel_at_point(-118.001, 37.001) == (4,3)
 
-def test_pixel_for_point_just_southeast_of_southeast_corner_of_southeast_pixel_is_outside_coverage(raster_dataset):
-    assert raster_dataset.pixel_for(-117.999, 36.999) == None
+def test_pixel_at_point_just_southeast_of_southeast_corner_of_southeast_pixel_is_outside_coverage(raster_dataset):
+    assert raster_dataset.pixel_at_point(-117.999, 36.999) == None
