@@ -28,6 +28,7 @@ class RasterDataset:
         self._geotransform = self.gdal_dataset.GetGeoTransform()
         self._affine = skope.analysis.get_affine(self.gdal_dataset)
         self._inverse_affine = ~self._affine
+        self._array = self.gdal_dataset.ReadAsArray()
 
     @property
     def bands(self):
@@ -43,7 +44,7 @@ class RasterDataset:
 
     @property
     def shape(self):
-        return self.bands, self.rows, self.cols 
+        return self._array.shape
 
     @property
     def geotransform(self):
@@ -113,9 +114,7 @@ class RasterDataset:
             return None
 
     def value_at_pixel(self, row, column, band):
-        selected_band = self.gdal_dataset.GetRasterBand(band)
-        pixel_array = selected_band.ReadAsArray()
-        return pixel_array[row, column]
+        return self._array[band-1, row, column]
 
     def value_at_point(self, longitude, latitude, band):
         pixel_x, pixel_y = self.pixel_at_point(longitude, latitude)
@@ -124,14 +123,14 @@ class RasterDataset:
     def series_at_pixel(self, row, column):
         series = np.empty(self.bands)
         for i in range(0, self.bands):
-            series[i] = self.value_at_pixel(row, column, i+1)
+            series[i] = self._array[i, row, column]
         return series
 
     def series_at_point(self, longitude, latitude):
         series = np.empty(self.bands)
         row, column = self.pixel_at_point(longitude, latitude)
         for i in range(0, self.bands):
-            series[i] = self.value_at_pixel(row, column, i+1)
+            series[i] = self._array[i, row, column]
         return series
 
 ################################################################################
