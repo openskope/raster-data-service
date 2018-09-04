@@ -26,8 +26,8 @@ class RasterDataset:
 
         self.gdal_dataset, self.filename = _get_gdal_dataset_for_argument(dataset)
         self._geotransform = self.gdal_dataset.GetGeoTransform()
-        self._affine = skope.analysis.get_affine(self.gdal_dataset)
-        self._inverse_affine = ~self._affine
+        self._affine = None
+        self._inverse_affine = None
         self._array = self.gdal_dataset.ReadAsArray()
 
     @property
@@ -72,10 +72,14 @@ class RasterDataset:
 
     @property
     def affine(self):
+        if self._affine is None:
+            self._affine = skope.analysis.get_affine(self.gdal_dataset)
         return self._affine
 
     @property
     def inverse_affine(self):
+        if self._inverse_affine is None:
+            self._inverse_affine = ~self.affine
         return self._inverse_affine
 
     @property
@@ -84,30 +88,30 @@ class RasterDataset:
 
     @property
     def northwest_corner(self):
-        return self._affine * (0,0)
+        return self.affine * (0,0)
 
     @property
     def northeast_corner(self):
-        return self._affine * (self.cols, 0)
+        return self.affine * (self.cols, 0)
 
     @property
     def southeast_corner(self):
-        return self._affine * (self.cols, self.rows)
+        return self.affine * (self.cols, self.rows)
 
     @property
     def southwest_corner(self):
-        return self._affine * (0, self.rows)
+        return self.affine * (0, self.rows)
 
     @property
     def center(self):
-        return self._affine * (self.cols/2, self.rows/2)
+        return self.affine * (self.cols/2, self.rows/2)
 
     def pixel_in_coverage(self, pixel_x, pixel_y):
         return (pixel_x >= 0 and pixel_x <= self.cols and
                 pixel_y >= 0 and pixel_y <= self.rows)
 
     def pixel_at_point(self, longitude, latitude):
-        pixel_fractional_x, pixel_fractional_y = self._inverse_affine * (longitude, latitude)
+        pixel_fractional_x, pixel_fractional_y = self.inverse_affine * (longitude, latitude)
         if self.pixel_in_coverage(pixel_fractional_x, pixel_fractional_y):
             return int(pixel_fractional_x), int(pixel_fractional_y)
         else:
