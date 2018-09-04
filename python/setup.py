@@ -12,5 +12,6 @@ setup(
     packages=['skope.analysis'],
     package_dir={'': 'src'},
     data_files = [("", ["LICENSE.txt"])],
-    install_requires=['affine >= 2.2.1']
+    install_requires=['affine >= 2.2.1'],
+    scripts=['scripts/series.py']
 )
