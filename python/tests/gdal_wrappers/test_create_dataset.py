@@ -126,8 +126,9 @@ def test_projected_coordinates_of_pixel_4_3_is_southeast_corner(affine_matrix: L
 def test_inverse_projection_of_southeast_corner_is_pixel_5_4(inverse_affine: List[float]):
     assert (inverse_affine * (-118.0, 37.0)) == (5, 4)
 
-@pytest.mark.parametrize("band_number", range(1,DATASET_BAND_COUNT+1))
-def test_initial_pixel_values_all_zero_in_band(dataset: gdal.Dataset, band_number: int):
+@pytest.mark.parametrize("band_index", range(0,DATASET_BAND_COUNT))
+def test_initial_pixel_values_all_zero_in_band(dataset: gdal.Dataset, band_index: int):
+    band_number = band_index + 1
     band_pixels = dataset.GetRasterBand(band_number).ReadAsArray()
     assert np.array_equal(band_pixels, np.array([[0.,0.,0.,0.,0.],
                                                  [0.,0.,0.,0.,0.],

@@ -22,17 +22,17 @@ DATASET_NODATA_VALUE         = float('nan')
 ################################################################################
 
 @pytest.fixture(scope='module')
-def array_assigned_to_band_1():
+def array_assigned_to_band_index_0():
     return np.array([[1,2],[3,4]])
 
 @pytest.fixture(scope='module')
-def array_assigned_to_band_2():
+def array_assigned_to_band_index_1():
     return np.array([[11,12],[13,14]])
 
 @pytest.fixture(scope='module')
 def dataset(test_dataset_filename, 
-            array_assigned_to_band_1, 
-            array_assigned_to_band_2) -> gdal.Dataset:
+            array_assigned_to_band_index_0, 
+            array_assigned_to_band_index_1) -> gdal.Dataset:
     '''Create a new dataset, and set its values using write_band() and 
     write_pixel() functions.'''
 
@@ -52,13 +52,13 @@ def dataset(test_dataset_filename,
     )
 
     # set the values in band 1 with a call to write_band
-    skope.analysis.write_band(dataset, 1, array_assigned_to_band_1, DATASET_NODATA_VALUE)
+    skope.analysis.write_band(dataset, 0, array_assigned_to_band_index_0, DATASET_NODATA_VALUE)
 
     # set the values in band 2 with calls to write_pixel
-    skope.analysis.write_pixel(dataset, 2, 0, 0, array_assigned_to_band_2[0,0])
-    skope.analysis.write_pixel(dataset, 2, 0, 1, array_assigned_to_band_2[0,1])
-    skope.analysis.write_pixel(dataset, 2, 1, 0, array_assigned_to_band_2[1,0])
-    skope.analysis.write_pixel(dataset, 2, 1, 1, array_assigned_to_band_2[1,1])
+    skope.analysis.write_pixel(dataset, 1, 0, 0, array_assigned_to_band_index_1[0,0])
+    skope.analysis.write_pixel(dataset, 1, 0, 1, array_assigned_to_band_index_1[0,1])
+    skope.analysis.write_pixel(dataset, 1, 1, 0, array_assigned_to_band_index_1[1,0])
+    skope.analysis.write_pixel(dataset, 1, 1, 1, array_assigned_to_band_index_1[1,1])
 
     return dataset
 
@@ -67,29 +67,29 @@ def dataset(test_dataset_filename,
 # ################################################################################
 
 def test_write_band_sets_assigns_expected_pixel_values(
-        dataset: gdal.Dataset, array_assigned_to_band_1):
+        dataset: gdal.Dataset, array_assigned_to_band_index_0):
     assert np.array_equal(
-        array_assigned_to_band_1, 
+        array_assigned_to_band_index_0, 
         dataset.GetRasterBand(1).ReadAsArray()
     )
     
 def test_write_pixel_sets_assigns_expected_pixel_values(
-        dataset: gdal.Dataset, array_assigned_to_band_2):
+        dataset: gdal.Dataset, array_assigned_to_band_index_1):
     assert np.array_equal(
-        array_assigned_to_band_2, 
+        array_assigned_to_band_index_1, 
         dataset.GetRasterBand(2).ReadAsArray()
     )
 
 def test_read_band_returns_expected_pixel_values(
-        dataset: gdal.Dataset, array_assigned_to_band_1):
+        dataset: gdal.Dataset, array_assigned_to_band_index_0):
     assert np.array_equal(
-        array_assigned_to_band_1, 
-        skope.analysis.read_band(dataset, 1)
+        array_assigned_to_band_index_0, 
+        skope.analysis.read_band(dataset, 0)
     )
 
 def test_read_pixel_returns_expected_pixel_values(
-        dataset: gdal.Dataset, array_assigned_to_band_2):
-    assert array_assigned_to_band_2[0,0] == skope.analysis.read_pixel(dataset, 2, 0, 0)
-    assert array_assigned_to_band_2[0,1] == skope.analysis.read_pixel(dataset, 2, 0, 1)
-    assert array_assigned_to_band_2[1,0] == skope.analysis.read_pixel(dataset, 2, 1, 0)
-    assert array_assigned_to_band_2[1,1] == skope.analysis.read_pixel(dataset, 2, 1, 1)
+        dataset: gdal.Dataset, array_assigned_to_band_index_1):
+    assert skope.analysis.read_pixel(dataset, 1, 0, 0) == array_assigned_to_band_index_1[0,0]
+    assert skope.analysis.read_pixel(dataset, 1, 0, 1) == array_assigned_to_band_index_1[0,1]
+    assert skope.analysis.read_pixel(dataset, 1, 1, 0) == array_assigned_to_band_index_1[1,0]
+    assert skope.analysis.read_pixel(dataset, 1, 1, 1) == array_assigned_to_band_index_1[1,1] 

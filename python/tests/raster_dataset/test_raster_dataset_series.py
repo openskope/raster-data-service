@@ -23,17 +23,17 @@ DATASET_NODATA_VALUE         = float('nan')
 ################################################################################
 
 @pytest.fixture(scope='module')
-def array_assigned_to_band_1():
+def array_assigned_to_band_index_0():
     return np.array([[1,2],[3,4]])
 
 @pytest.fixture(scope='module')
-def array_assigned_to_band_2():
+def array_assigned_to_band_index_1():
     return np.array([[11,12],[13,14]])
 
 @pytest.fixture(scope='module')
 def raster_dataset(test_dataset_filename, 
-                   array_assigned_to_band_1, 
-                   array_assigned_to_band_2) -> RasterDataset:
+                   array_assigned_to_band_index_0, 
+                   array_assigned_to_band_index_1) -> RasterDataset:
 
     datafile_path = test_dataset_filename(__file__)
 
@@ -52,8 +52,8 @@ def raster_dataset(test_dataset_filename,
     )
 
     # set the values in band 1 with a call to write_band
-    skope.analysis.write_band(gdal_dataset, 1, array_assigned_to_band_1, DATASET_NODATA_VALUE)
-    skope.analysis.write_band(gdal_dataset, 2, array_assigned_to_band_2, DATASET_NODATA_VALUE)
+    skope.analysis.write_band(gdal_dataset, 0, array_assigned_to_band_index_0, DATASET_NODATA_VALUE)
+    skope.analysis.write_band(gdal_dataset, 1, array_assigned_to_band_index_1, DATASET_NODATA_VALUE)
 
     gdal_dataset = None
 

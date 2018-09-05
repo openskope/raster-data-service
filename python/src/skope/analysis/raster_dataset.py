@@ -123,17 +123,17 @@ class RasterDataset:
         else:
             return None
 
-    def value_at_pixel(self, band: int, row: int, column: int):
-        return self._array[band-1, row, column]
+    def value_at_pixel(self, band_index: int, row: int, column: int):
+        return self._array[band_index, row, column]
 
-    def value_at_point(self, longitude: float, latitude: float, band: int):
+    def value_at_point(self, longitude: float, latitude: float, band_index: int):
         row, column = self.pixel_at_point(longitude, latitude)
-        return self.value_at_pixel(band, row, column)
+        return self.value_at_pixel(band_index, row, column)
 
     def series_at_pixel(self, row: int, column: int) -> numpy.ndarray:
         series = numpy.empty(self.bands)
-        for band in range(0, self.bands):
-            series[band] = self._array[band, row, column]
+        for band_index in range(0, self.bands):
+            series[band_index] = self._array[band_index, row, column]
         return series
 
     def series_at_point(self, longitude: float, latitude: float) -> numpy.ndarray:

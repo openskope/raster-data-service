@@ -40,27 +40,31 @@ def open_dataset(filename: str) -> gdal.Dataset:
     '''Open an existing dataset file with GDAL and return a gdal.Dataset object.'''
     return gdal.Open(filename)
 
-def read_band(gdal_dataset: gdal.Dataset, band: int) -> numpy.ndarray:
+def read_band(gdal_dataset: gdal.Dataset, band_index: int) -> numpy.ndarray:
     '''Return pixel values of one band of a gdal.Dataset as a 2D numpy array.'''
-    selected_band = gdal_dataset.GetRasterBand(band)
+    band_number = band_index + 1
+    selected_band = gdal_dataset.GetRasterBand(band_number)
     return selected_band.ReadAsArray()
 
-def write_band(gdal_dataset: gdal.Dataset, band: int, array: numpy.ndarray, nodata) -> None:
+def write_band(gdal_dataset: gdal.Dataset, band_index: int, array: numpy.ndarray, nodata) -> None:
     '''Copy a 2D numpy array to the specified band of a gdal.Dataset.'''
-    selected_band = gdal_dataset.GetRasterBand(band)
+    band_number = band_index + 1
+    selected_band = gdal_dataset.GetRasterBand(band_number)
     selected_band.WriteArray(array)
     selected_band.SetNoDataValue(nodata)
     selected_band.FlushCache()
     
-def read_pixel(gdal_dataset: gdal.Dataset, band: int, row: int, column: int) -> numpy.ndarray:
+def read_pixel(gdal_dataset: gdal.Dataset, band_index: int, row: int, column: int) -> numpy.ndarray:
     '''Read one pixel of a gdal.Dataset.'''
-    selected_band = gdal_dataset.GetRasterBand(band)
+    band_number = band_index + 1
+    selected_band = gdal_dataset.GetRasterBand(band_number)
     pixel_array = selected_band.ReadAsArray()
     return pixel_array[row, column]
     
-def write_pixel(gdal_dataset: gdal.Dataset, band: int, row: int, column: int, value) -> None:
+def write_pixel(gdal_dataset: gdal.Dataset, band_index: int, row: int, column: int, value) -> None:
     '''Write value to one pixel of a gdal.Dataset.'''
-    selected_band = gdal_dataset.GetRasterBand(band)
+    band_number = band_index + 1
+    selected_band = gdal_dataset.GetRasterBand(band_number)
     array = selected_band.ReadAsArray()
     array[row, column] = value
     selected_band.WriteArray(array)
