@@ -1,14 +1,24 @@
 import affine
 import osr
-import numpy as np
-from osgeo import gdal
+import numpy
 
-def create_dataset(filename, format, pixel_type, 
-                   rows, cols, bands, 
-                   origin_long, origin_lat, 
-                   pixel_width, pixel_height, 
-                   coordinate_system='WGS84'):
+from osgeo import gdal
+from typing import List
+
+def create_dataset(
+    filename: str, 
+    format: str, 
+    pixel_type, 
+    rows: int, 
+    cols: int, 
+    bands: int, 
+    origin_long: float, 
+    origin_lat: float, 
+    pixel_width: float, 
+    pixel_height: float, 
+    coordinate_system='WGS84') -> gdal.Dataset:
     '''Create a new GDAL dataset and datafile, returning the dataset object.'''
+
     # get the GDAL driver for the specified data format
     driver = gdal.GetDriverByName(format)
 
@@ -26,29 +36,29 @@ def create_dataset(filename, format, pixel_type,
     # return the gdal.Dataset object corresponding to the open datafile
     return gdal_dataset
 
-def open_dataset(filename):
+def open_dataset(filename: str) -> gdal.Dataset:
     '''Open an existing dataset file with GDAL and return a gdal.Dataset object.'''
     return gdal.Open(filename)
 
-def read_band(gdal_dataset, band):
+def read_band(gdal_dataset: gdal.Dataset, band: int) -> numpy.ndarray:
     '''Return pixel values of one band of a gdal.Dataset as a 2D numpy array.'''
     selected_band = gdal_dataset.GetRasterBand(band)
     return selected_band.ReadAsArray()
 
-def write_band(gdal_dataset, band, array, nodata):
+def write_band(gdal_dataset: gdal.Dataset, band: int, array: numpy.ndarray, nodata) -> None:
     '''Copy a 2D numpy array to the specified band of a gdal.Dataset.'''
     selected_band = gdal_dataset.GetRasterBand(band)
     selected_band.WriteArray(array)
     selected_band.SetNoDataValue(nodata)
     selected_band.FlushCache()
     
-def read_pixel(gdal_dataset, band, row, column):
+def read_pixel(gdal_dataset: gdal.Dataset, band: int, row: int, column: int) -> numpy.ndarray:
     '''Read one pixel of a gdal.Dataset.'''
     selected_band = gdal_dataset.GetRasterBand(band)
     pixel_array = selected_band.ReadAsArray()
     return pixel_array[row, column]
     
-def write_pixel(gdal_dataset, band, row, column, value):
+def write_pixel(gdal_dataset: gdal.Dataset, band: int, row: int, column: int, value) -> None:
     '''Write value to one pixel of a gdal.Dataset.'''
     selected_band = gdal_dataset.GetRasterBand(band)
     array = selected_band.ReadAsArray()
@@ -56,7 +66,7 @@ def write_pixel(gdal_dataset, band, row, column, value):
     selected_band.WriteArray(array)
     selected_band.FlushCache()
 
-def get_affine(gdal_dataset):
+def get_affine(gdal_dataset: gdal.Dataset) -> List[float]:
     geotransform = gdal_dataset.GetGeoTransform()
     return affine.Affine.from_gdal(geotransform[0], geotransform[1],
                                    geotransform[2], geotransform[3],

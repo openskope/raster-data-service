@@ -3,6 +3,7 @@ import skope.analysis
 
 from affine import Affine
 from osgeo import gdal
+from skope.analysis import RasterDataset
 
 ################################################################################
 # Module-scoped constants defining properties of the test dataset.
@@ -22,7 +23,7 @@ DATASET_NODATA_VALUE         = float('nan')
 ################################################################################
 
 @pytest.fixture(scope='module')
-def valid_dataset_filename(test_dataset_filename):
+def valid_dataset_filename(test_dataset_filename) -> str:
     '''Return a new gdal.Dataset instance'''
     valid_dataset_filename = test_dataset_filename(__file__)
     skope.analysis.create_dataset(
@@ -41,47 +42,47 @@ def valid_dataset_filename(test_dataset_filename):
     return valid_dataset_filename
 
 @pytest.fixture(scope='module')
-def valid_gdal_dataset(valid_dataset_filename):
+def valid_gdal_dataset(valid_dataset_filename: str) -> gdal.Dataset:
     '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
     return skope.analysis.open_dataset(valid_dataset_filename)
 
 @pytest.fixture(scope='module')
-def invalid_dataset_filename(test_dataset_filename):
+def invalid_dataset_filename(test_dataset_filename: str):
     '''Return the path to an empty text file representing an invalid dataset file.'''
     invalid_dataset_filename = test_dataset_filename(__file__, ".txt")
     open(invalid_dataset_filename, 'w').close()
     return invalid_dataset_filename
 
 @pytest.fixture(scope='module')
-def expected_type_error_message():
+def expected_type_error_message() -> str:
     return 'Expected a gdal.Dataset object or a string representing the path to a datafile.'
 
 @pytest.fixture(scope='module')
-def expected_file_not_found_error_message():
+def expected_file_not_found_error_message() -> str:
     return 'Dataset file not found at path'
 
 @pytest.fixture(scope='module')
-def expected_invalid_dataset_file_error_message():
+def expected_invalid_dataset_file_error_message() -> str:
     return 'Invalid dataset file found at path'
 
 ################################################################################
 # Tests of the RasterDataset constructor.
 ################################################################################
 
-def test_when_constructor_argument_is_none_a_datatype_exception_is_raised(expected_type_error_message):
+def test_when_constructor_argument_is_none_a_datatype_exception_is_raised(expected_type_error_message: str):
     with pytest.raises(TypeError, match=expected_type_error_message):
         skope.analysis.RasterDataset(None)
 
-def test_when_constructor_argument_is_int_an_exception_is_raised(expected_type_error_message):
+def test_when_constructor_argument_is_int_an_exception_is_raised(expected_type_error_message: str):
     with pytest.raises(TypeError, match=expected_type_error_message):
         skope.analysis.RasterDataset(1)
 
-def test_when_constructor_argument_is_invalid_string_an_exception_is_raised(expected_file_not_found_error_message):
+def test_when_constructor_argument_is_invalid_string_an_exception_is_raised(expected_file_not_found_error_message: str):
     with pytest.raises(FileNotFoundError, match=expected_file_not_found_error_message):
         skope.analysis.RasterDataset("path_to_nonexistent_file")
 
-def test_when_constructor_argument_is_a_gdal_dataset_properties_are_correct(valid_gdal_dataset):
-    raster_dataset = skope.analysis.RasterDataset(valid_gdal_dataset)
+def test_when_constructor_argument_is_a_gdal_dataset_properties_are_correct(valid_gdal_dataset: gdal.Dataset):
+    raster_dataset = RasterDataset(valid_gdal_dataset)
     assert raster_dataset.filename == None
     assert raster_dataset.gdal_dataset == valid_gdal_dataset
     assert raster_dataset.shape == (4, 3, 2)
@@ -101,8 +102,8 @@ def test_when_constructor_argument_is_a_gdal_dataset_properties_are_correct(vali
     assert raster_dataset.southeast_corner == (-121, 39)
     assert raster_dataset.center == (-122, 42)
 
-def test_when_constructor_argument_is_path_to_dataset_properties_are_correct(valid_dataset_filename):
-    raster_dataset = skope.analysis.RasterDataset(valid_dataset_filename)
+def test_when_constructor_argument_is_path_to_dataset_properties_are_correct(valid_dataset_filename: str):
+    raster_dataset = RasterDataset(valid_dataset_filename)
     assert raster_dataset.filename == valid_dataset_filename
     assert raster_dataset.shape == (4, 3, 2)
     assert raster_dataset.bands == 4
@@ -123,4 +124,4 @@ def test_when_constructor_argument_is_path_to_dataset_properties_are_correct(val
 
 def test_when_constructor_argument_is_path_to_invalid_dataset_file_an_exception_is_raised(invalid_dataset_filename, expected_invalid_dataset_file_error_message):
     with pytest.raises(ValueError, match=expected_invalid_dataset_file_error_message):
-        skope.analysis.RasterDataset(invalid_dataset_filename)
+        RasterDataset(invalid_dataset_filename)

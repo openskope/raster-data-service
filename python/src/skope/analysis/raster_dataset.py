@@ -1,9 +1,11 @@
 import affine
-import osr
-import numpy as np
+import numpy
 import os
-from osgeo import gdal
+import osr
 import skope.analysis
+
+from osgeo import gdal
+from typing import List, Tuple
 
 ################################################################################
 # Class definition for RasterDataset
@@ -12,8 +14,11 @@ import skope.analysis
 class RasterDataset:
 
     @staticmethod
-    def new(filename, format, pixel_type, rows, cols, bands, origin_long, origin_lat,
-            pixel_width, pixel_height, coordinate_system='WGS84'):
+    def new(filename: str, format: str, pixel_type, 
+            rows: int, cols: int, bands: int, 
+            origin_long: float, origin_lat: float,
+            pixel_width: float, pixel_height: float, 
+            coordinate_system='WGS84'):
 
         skope.analysis.create_dataset(
             filename, format, pixel_type, rows, cols, bands, origin_long, origin_lat,
@@ -31,86 +36,86 @@ class RasterDataset:
         self._array = self.gdal_dataset.ReadAsArray()
 
     @property
-    def bands(self):
+    def bands(self) -> int:
         return self.gdal_dataset.RasterCount
 
     @property
-    def rows(self):
+    def rows(self) -> int:
         return self.gdal_dataset.RasterYSize
 
     @property
-    def cols(self):
+    def cols(self) -> int:
         return self.gdal_dataset.RasterXSize
 
     @property
-    def shape(self):
+    def shape(self) -> Tuple[int]:
         return self._array.shape
 
     @property
-    def geotransform(self):
+    def geotransform(self) -> List[float]:
         return self._geotransform
 
     @property
-    def origin_long(self):
+    def origin_long(self) -> float:
         return self.geotransform[0]
 
     @property
-    def origin_lat(self):
+    def origin_lat(self) -> float:
         return self.geotransform[3]
 
     @property
-    def origin(self):
+    def origin(self) -> (float, float):
         return self.geotransform[0], self.geotransform[3]
 
     @property
-    def pixel_size_x(self):
+    def pixel_size_x(self) -> float:
         return self.geotransform[1]
 
     @property
-    def pixel_size_y(self):
+    def pixel_size_y(self) -> float:
         return -self.geotransform[5]
 
     @property
-    def affine(self):
+    def affine(self) -> List[float]:
         if self._affine is None:
             self._affine = skope.analysis.get_affine(self.gdal_dataset)
         return self._affine
 
     @property
-    def inverse_affine(self):
+    def inverse_affine(self) -> List[float]:
         if self._inverse_affine is None:
             self._inverse_affine = ~self.affine
         return self._inverse_affine
 
     @property
-    def pixel_size(self):
+    def pixel_size(self) -> float:
         return (self.geotransform[1], -self.geotransform[5])
 
     @property
-    def northwest_corner(self):
+    def northwest_corner(self) -> (float, float):
         return self.affine * (0,0)
 
     @property
-    def northeast_corner(self):
+    def northeast_corner(self) -> (float, float):
         return self.affine * (self.cols, 0)
 
     @property
-    def southeast_corner(self):
+    def southeast_corner(self) -> (float, float):
         return self.affine * (self.cols, self.rows)
 
     @property
-    def southwest_corner(self):
+    def southwest_corner(self) -> (float, float):
         return self.affine * (0, self.rows)
 
     @property
-    def center(self):
+    def center(self) -> (float, float):
         return self.affine * (self.cols/2, self.rows/2)
 
-    def pixel_in_coverage(self, pixel_row, pixel_column):
-        return (pixel_column >= 0 and pixel_column <= self.cols and
-                pixel_row >= 0 and pixel_row <= self.rows)
+    def pixel_in_coverage(self, row: int, column: int) -> bool:
+        return (column >= 0 and column <= self.cols and
+                row >= 0 and row <= self.rows)
 
-    def pixel_at_point(self, longitude, latitude):
+    def pixel_at_point(self, longitude: float, latitude: float) -> (int, int):
         fractional_column, fractional_row = self.inverse_affine * (longitude, latitude)
         if self.pixel_in_coverage(fractional_row, fractional_column):
             row, column = int(fractional_row), int(fractional_column)
@@ -118,20 +123,20 @@ class RasterDataset:
         else:
             return None
 
-    def value_at_pixel(self, band, row, column):
+    def value_at_pixel(self, band: int, row: int, column: int):
         return self._array[band-1, row, column]
 
-    def value_at_point(self, longitude, latitude, band):
+    def value_at_point(self, longitude: float, latitude: float, band: int):
         row, column = self.pixel_at_point(longitude, latitude)
         return self.value_at_pixel(band, row, column)
 
-    def series_at_pixel(self, row, column):
-        series = np.empty(self.bands)
+    def series_at_pixel(self, row: int, column: int) -> numpy.ndarray:
+        series = numpy.empty(self.bands)
         for band in range(0, self.bands):
             series[band] = self._array[band, row, column]
         return series
 
-    def series_at_point(self, longitude, latitude):
+    def series_at_point(self, longitude: float, latitude: float) -> numpy.ndarray:
         row, column = self.pixel_at_point(longitude, latitude)
         return self.series_at_pixel(row, column)
 
@@ -139,7 +144,7 @@ class RasterDataset:
 # Private helper methods
 ################################################################################
 
-def _get_gdal_dataset_for_argument(dataset):
+def _get_gdal_dataset_for_argument(dataset) -> (gdal.Dataset, str):
     '''Examine the dataset argument and return, as a tuple, the corresponding gdal.Dataset object
     and the path to the dataset file if known.'''
 

@@ -14,3 +14,5 @@ __pycache__
 temp/
 .vs/
 python.pyproj
+*.sln
+.mypy_cache/

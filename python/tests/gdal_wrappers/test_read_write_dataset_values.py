@@ -30,7 +30,9 @@ def array_assigned_to_band_2():
     return np.array([[11,12],[13,14]])
 
 @pytest.fixture(scope='module')
-def dataset(test_dataset_filename, array_assigned_to_band_1, array_assigned_to_band_2):
+def dataset(test_dataset_filename, 
+            array_assigned_to_band_1, 
+            array_assigned_to_band_2) -> gdal.Dataset:
     '''Create a new dataset, and set its values using write_band() and 
     write_pixel() functions.'''
 
@@ -64,25 +66,29 @@ def dataset(test_dataset_filename, array_assigned_to_band_1, array_assigned_to_b
 # Tests of dataset read and write functions.
 # ################################################################################
 
-def test_write_band_sets_assigns_expected_pixel_values(dataset, array_assigned_to_band_1):
+def test_write_band_sets_assigns_expected_pixel_values(
+        dataset: gdal.Dataset, array_assigned_to_band_1):
     assert np.array_equal(
         array_assigned_to_band_1, 
         dataset.GetRasterBand(1).ReadAsArray()
     )
     
-def test_write_pixel_sets_assigns_expected_pixel_values(dataset, array_assigned_to_band_2):
+def test_write_pixel_sets_assigns_expected_pixel_values(
+        dataset: gdal.Dataset, array_assigned_to_band_2):
     assert np.array_equal(
         array_assigned_to_band_2, 
         dataset.GetRasterBand(2).ReadAsArray()
     )
 
-def test_read_band_returns_expected_pixel_values(dataset, array_assigned_to_band_1):
+def test_read_band_returns_expected_pixel_values(
+        dataset: gdal.Dataset, array_assigned_to_band_1):
     assert np.array_equal(
         array_assigned_to_band_1, 
         skope.analysis.read_band(dataset, 1)
     )
 
-def test_read_pixel_returns_expected_pixel_values(dataset, array_assigned_to_band_2):
+def test_read_pixel_returns_expected_pixel_values(
+        dataset: gdal.Dataset, array_assigned_to_band_2):
     assert array_assigned_to_band_2[0,0] == skope.analysis.read_pixel(dataset, 2, 0, 0)
     assert array_assigned_to_band_2[0,1] == skope.analysis.read_pixel(dataset, 2, 0, 1)
     assert array_assigned_to_band_2[1,0] == skope.analysis.read_pixel(dataset, 2, 1, 0)

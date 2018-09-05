@@ -3,6 +3,7 @@ import pytest
 import skope.analysis
 
 from osgeo import gdal
+from skope.analysis import RasterDataset
 
 ################################################################################
 # Module-scoped constants defining properties of the test dataset.
@@ -30,7 +31,9 @@ def array_assigned_to_band_2():
     return np.array([[11,12],[13,14]])
 
 @pytest.fixture(scope='module')
-def raster_dataset(test_dataset_filename, array_assigned_to_band_1, array_assigned_to_band_2):
+def raster_dataset(test_dataset_filename, 
+                   array_assigned_to_band_1, 
+                   array_assigned_to_band_2) -> RasterDataset:
 
     datafile_path = test_dataset_filename(__file__)
 
@@ -54,14 +57,14 @@ def raster_dataset(test_dataset_filename, array_assigned_to_band_1, array_assign
 
     gdal_dataset = None
 
-    return skope.analysis.RasterDataset(datafile_path)
+    return RasterDataset(datafile_path)
 
 
 ################################################################################
 # Tests of raster dataset pixel read function.
 ################################################################################
 
-def test_value_at_pixel_returns_value_of_each_pixel_in_dataset(raster_dataset):
+def test_value_at_pixel_returns_value_of_each_pixel_in_dataset(raster_dataset: int):
     assert raster_dataset.value_at_pixel(row=0, column=0, band=1) == 1
     assert raster_dataset.value_at_pixel(row=0, column=1, band=1) == 2
     assert raster_dataset.value_at_pixel(row=1, column=0, band=1) == 3
@@ -71,10 +74,10 @@ def test_value_at_pixel_returns_value_of_each_pixel_in_dataset(raster_dataset):
     assert raster_dataset.value_at_pixel(row=1, column=0, band=2) == 13
     assert raster_dataset.value_at_pixel(row=1, column=1, band=2) == 14
 
-def test_value_at_point_returns_value_at_0_0_for_origin(raster_dataset):
+def test_value_at_point_returns_value_at_0_0_for_origin(raster_dataset: RasterDataset):
     assert raster_dataset.value_at_point(-123, 45, band=1) == 1
     assert raster_dataset.value_at_point(-123, 45, band=2) == 11
 
-def test_value_at_point_returns_value_at_1_1_near_southeast_corner(raster_dataset):
+def test_value_at_point_returns_value_at_1_1_near_southeast_corner(raster_dataset: RasterDataset):
     assert raster_dataset.value_at_point(-121.001, 43.001, band=1) == 4
     assert raster_dataset.value_at_point(-121.001, 43.001, band=2) == 14
