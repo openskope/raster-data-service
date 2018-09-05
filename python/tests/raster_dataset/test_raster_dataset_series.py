@@ -88,10 +88,10 @@ def test_series_at_point_pixel_0_0_is_correct(raster_dataset):
     assert raster_dataset.series_at_point(-123,45).tolist() == [1,11]
 
 def test_series_at_point_in_pixel_0_1_is_correct(raster_dataset):
-    assert raster_dataset.series_at_point(-123,44).tolist() == [2,12]
+    assert raster_dataset.series_at_point(-122,45).tolist() == [2,12]
 
 def test_series_at_point_in_pixel_1_0_is_correct(raster_dataset):
-    assert raster_dataset.series_at_point(-122,45).tolist() == [3,13]
+    assert raster_dataset.series_at_point(-123,44).tolist() == [3,13]
 
 def test_series_at_point_in_pixel_1_1_is_correct(raster_dataset):
     assert raster_dataset.series_at_point(-122,44).tolist() == [4,14]

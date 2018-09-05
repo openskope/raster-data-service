@@ -106,36 +106,34 @@ class RasterDataset:
     def center(self):
         return self.affine * (self.cols/2, self.rows/2)
 
-    def pixel_in_coverage(self, pixel_x, pixel_y):
-        return (pixel_x >= 0 and pixel_x <= self.cols and
-                pixel_y >= 0 and pixel_y <= self.rows)
+    def pixel_in_coverage(self, pixel_row, pixel_column):
+        return (pixel_column >= 0 and pixel_column <= self.cols and
+                pixel_row >= 0 and pixel_row <= self.rows)
 
     def pixel_at_point(self, longitude, latitude):
-        pixel_fractional_x, pixel_fractional_y = self.inverse_affine * (longitude, latitude)
-        if self.pixel_in_coverage(pixel_fractional_x, pixel_fractional_y):
-            return int(pixel_fractional_x), int(pixel_fractional_y)
+        fractional_column, fractional_row = self.inverse_affine * (longitude, latitude)
+        if self.pixel_in_coverage(fractional_row, fractional_column):
+            row, column = int(fractional_row), int(fractional_column)
+            return row, column
         else:
             return None
 
-    def value_at_pixel(self, row, column, band):
+    def value_at_pixel(self, band, row, column):
         return self._array[band-1, row, column]
 
     def value_at_point(self, longitude, latitude, band):
-        pixel_x, pixel_y = self.pixel_at_point(longitude, latitude)
-        return self.value_at_pixel(pixel_x, pixel_y, band)
+        row, column = self.pixel_at_point(longitude, latitude)
+        return self.value_at_pixel(band, row, column)
 
     def series_at_pixel(self, row, column):
         series = np.empty(self.bands)
-        for i in range(0, self.bands):
-            series[i] = self._array[i, row, column]
+        for band in range(0, self.bands):
+            series[band] = self._array[band, row, column]
         return series
 
     def series_at_point(self, longitude, latitude):
-        series = np.empty(self.bands)
         row, column = self.pixel_at_point(longitude, latitude)
-        for i in range(0, self.bands):
-            series[i] = self._array[i, row, column]
-        return series
+        return self.series_at_pixel(row, column)
 
 ################################################################################
 # Private helper methods

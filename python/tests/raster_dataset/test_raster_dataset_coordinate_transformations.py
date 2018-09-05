@@ -80,7 +80,7 @@ def test_pixel_at_point_just_northwest_of_northwest_corner_of_northwest_pixel_is
     assert raster_dataset.pixel_at_point(-123.001,45.001) == None
 
 def test_pixel_at_point_just_northwest_of_southeast_corner_of_southeast_pixel_is_boottom_right_pixel(raster_dataset):
-    assert raster_dataset.pixel_at_point(-118.001, 37.001) == (4,3)
+    assert raster_dataset.pixel_at_point(-118.001, 37.001) == (3,4)
 
 def test_pixel_at_point_just_southeast_of_southeast_corner_of_southeast_pixel_is_outside_coverage(raster_dataset):
     assert raster_dataset.pixel_at_point(-117.999, 36.999) == None
