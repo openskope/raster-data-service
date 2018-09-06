@@ -13,6 +13,6 @@ __pycache__
 .pytest_cache/
 temp/
 .vs/
-python.pyproj
+*.pyproj
 *.sln
 .mypy_cache/
