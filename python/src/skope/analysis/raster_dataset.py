@@ -130,15 +130,21 @@ class RasterDataset:
         row, column = self.pixel_at_point(longitude, latitude)
         return self.value_at_pixel(band_index, row, column)
 
-    def series_at_pixel(self, row: int, column: int) -> numpy.ndarray:
-        series = numpy.empty(self.bands)
-        for band_index in range(0, self.bands):
-            series[band_index] = self._array[band_index, row, column]
+    def series_at_pixel(self, row: int, column: int, start: int = None, 
+                        end: int = None) -> numpy.ndarray:
+        if start is None:
+            start = 0
+        if end is None:
+            end = self.bands
+        series = numpy.empty(end - start)
+        for series_index in range(len(series)):
+            series[series_index] = self._array[series_index + start, row, column]
         return series
 
-    def series_at_point(self, longitude: float, latitude: float) -> numpy.ndarray:
+    def series_at_point(self, longitude: float, latitude: float, 
+                        start: int = None, end: int = None) -> numpy.ndarray:
         row, column = self.pixel_at_point(longitude, latitude)
-        return self.series_at_pixel(row, column)
+        return self.series_at_pixel(row, column, start, end)
 
 ################################################################################
 # Private helper methods
