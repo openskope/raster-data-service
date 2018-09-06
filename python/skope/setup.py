@@ -2,14 +2,14 @@
 from setuptools import setup
 
 setup(
-    name='skope.analysis',
+    name='skope',
     description='SKOPE data analysis tools',
     version='0.1.0',
     author='Timothy McPhillips',
     author_email='tmcphillips@absoluteflow.org',
-    url='https://github.com/tmcphillips/timeseries-service/python',
+    url='https://github.com/tmcphillips/timeseries-service/python/skope',
     license='MIT',
-    packages=['skope.analysis'],
+    packages=['skope'],
     package_dir={'': 'src'},
     data_files = [("", ["LICENSE.txt"])],
     install_requires=['affine >= 2.2.1', 'typing >= 3.6.6'],

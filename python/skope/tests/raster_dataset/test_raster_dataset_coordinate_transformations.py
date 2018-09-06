@@ -4,7 +4,7 @@ import os
 import pytest
 
 from osgeo import gdal
-from skope.analysis import RasterDataset
+from skope import RasterDataset
 
 
 ################################################################################

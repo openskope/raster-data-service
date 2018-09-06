@@ -1,9 +1,9 @@
 import numpy as np
 import pytest
-import skope.analysis
+import skope
 
 from osgeo import gdal
-from skope.analysis import RasterDataset
+from skope import RasterDataset
 
 ################################################################################
 # Module-scoped constants defining properties of the test dataset.
@@ -37,7 +37,7 @@ def raster_dataset(test_dataset_filename,
 
     datafile_path = test_dataset_filename(__file__)
 
-    gdal_dataset = skope.analysis.create_dataset(
+    gdal_dataset = skope.create_dataset(
         filename     = datafile_path,
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
@@ -52,8 +52,8 @@ def raster_dataset(test_dataset_filename,
     )
 
     # set the values in band 1 with a call to write_band
-    skope.analysis.write_band(gdal_dataset, 0, array_assigned_to_band_index_0, DATASET_NODATA_VALUE)
-    skope.analysis.write_band(gdal_dataset, 1, array_assigned_to_band_index_1, DATASET_NODATA_VALUE)
+    skope.write_band(gdal_dataset, 0, array_assigned_to_band_index_0, DATASET_NODATA_VALUE)
+    skope.write_band(gdal_dataset, 1, array_assigned_to_band_index_1, DATASET_NODATA_VALUE)
 
     gdal_dataset = None
 

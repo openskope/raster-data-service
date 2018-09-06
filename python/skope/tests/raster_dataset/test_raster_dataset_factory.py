@@ -2,10 +2,10 @@ import affine
 import numpy as np
 import os
 import pytest
-import skope.analysis
+import skope
 
 from osgeo import gdal
-from skope.analysis import RasterDataset
+from skope import RasterDataset
 from typing import List, Dict
 
 ################################################################################
@@ -66,7 +66,7 @@ def first_band(gdal_dataset) -> gdal.Band:
 ################################################################################
 
 def test_fixture_is_instance_of_raster_dataset(raster_dataset: RasterDataset):
-    assert str((type(raster_dataset))) == "<class 'skope.analysis.raster_dataset.RasterDataset'>"
+    assert str((type(raster_dataset))) == "<class 'skope.raster_dataset.RasterDataset'>"
 
 def test_created_datafile_exists(raster_dataset: RasterDataset):
     assert os.path.isfile(raster_dataset.filename) 

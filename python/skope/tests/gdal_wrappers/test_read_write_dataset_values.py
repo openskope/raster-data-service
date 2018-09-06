@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-import skope.analysis
+import skope
 
 from osgeo import gdal
 
@@ -37,7 +37,7 @@ def dataset(test_dataset_filename,
     write_pixel() functions.'''
 
     # create the new dataset
-    dataset = skope.analysis.create_dataset(
+    dataset = skope.create_dataset(
         filename     = test_dataset_filename(__file__),
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
@@ -52,13 +52,13 @@ def dataset(test_dataset_filename,
     )
 
     # set the values in band 1 with a call to write_band
-    skope.analysis.write_band(dataset, 0, array_assigned_to_band_index_0, DATASET_NODATA_VALUE)
+    skope.write_band(dataset, 0, array_assigned_to_band_index_0, DATASET_NODATA_VALUE)
 
     # set the values in band 2 with calls to write_pixel
-    skope.analysis.write_pixel(dataset, 1, 0, 0, array_assigned_to_band_index_1[0,0])
-    skope.analysis.write_pixel(dataset, 1, 0, 1, array_assigned_to_band_index_1[0,1])
-    skope.analysis.write_pixel(dataset, 1, 1, 0, array_assigned_to_band_index_1[1,0])
-    skope.analysis.write_pixel(dataset, 1, 1, 1, array_assigned_to_band_index_1[1,1])
+    skope.write_pixel(dataset, 1, 0, 0, array_assigned_to_band_index_1[0,0])
+    skope.write_pixel(dataset, 1, 0, 1, array_assigned_to_band_index_1[0,1])
+    skope.write_pixel(dataset, 1, 1, 0, array_assigned_to_band_index_1[1,0])
+    skope.write_pixel(dataset, 1, 1, 1, array_assigned_to_band_index_1[1,1])
 
     return dataset
 
@@ -84,12 +84,12 @@ def test_read_band_returns_expected_pixel_values(
         dataset: gdal.Dataset, array_assigned_to_band_index_0):
     assert np.array_equal(
         array_assigned_to_band_index_0, 
-        skope.analysis.read_band(dataset, 0)
+        skope.read_band(dataset, 0)
     )
 
 def test_read_pixel_returns_expected_pixel_values(
         dataset: gdal.Dataset, array_assigned_to_band_index_1):
-    assert skope.analysis.read_pixel(dataset, 1, 0, 0) == array_assigned_to_band_index_1[0,0]
-    assert skope.analysis.read_pixel(dataset, 1, 0, 1) == array_assigned_to_band_index_1[0,1]
-    assert skope.analysis.read_pixel(dataset, 1, 1, 0) == array_assigned_to_band_index_1[1,0]
-    assert skope.analysis.read_pixel(dataset, 1, 1, 1) == array_assigned_to_band_index_1[1,1] 
+    assert skope.read_pixel(dataset, 1, 0, 0) == array_assigned_to_band_index_1[0,0]
+    assert skope.read_pixel(dataset, 1, 0, 1) == array_assigned_to_band_index_1[0,1]
+    assert skope.read_pixel(dataset, 1, 1, 0) == array_assigned_to_band_index_1[1,0]
+    assert skope.read_pixel(dataset, 1, 1, 1) == array_assigned_to_band_index_1[1,1] 

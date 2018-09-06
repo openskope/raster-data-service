@@ -2,7 +2,7 @@ import affine
 import numpy as np
 import os
 import pytest
-import skope.analysis
+import skope
 
 from osgeo import gdal
 from typing import List, Dict
@@ -27,7 +27,7 @@ DATASET_PIXEL_HEIGHT     = 2.0
 def path_to_dataset(test_dataset_filename) -> str:
     '''Create a new dataset file and return its path.'''
     path_to_dataset = test_dataset_filename(__file__)
-    skope.analysis.create_dataset(
+    skope.create_dataset(
         filename     = path_to_dataset,
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
@@ -45,7 +45,7 @@ def path_to_dataset(test_dataset_filename) -> str:
 @pytest.fixture(scope='module')
 def dataset(path_to_dataset) -> gdal.Dataset:
     '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
-    return skope.analysis.open_dataset(path_to_dataset)
+    return skope.open_dataset(path_to_dataset)
 
 @pytest.fixture(scope='module')
 def metadata(dataset) -> Dict:

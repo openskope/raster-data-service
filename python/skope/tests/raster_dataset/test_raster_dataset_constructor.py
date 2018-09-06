@@ -1,9 +1,9 @@
 import pytest
-import skope.analysis
+import skope
 
 from affine import Affine
 from osgeo import gdal
-from skope.analysis import RasterDataset
+from skope import RasterDataset
 
 ################################################################################
 # Module-scoped constants defining properties of the test dataset.
@@ -26,7 +26,7 @@ DATASET_NODATA_VALUE         = float('nan')
 def valid_dataset_filename(test_dataset_filename) -> str:
     '''Return a new gdal.Dataset instance'''
     valid_dataset_filename = test_dataset_filename(__file__)
-    skope.analysis.create_dataset(
+    skope.create_dataset(
         filename     = valid_dataset_filename,
         format       = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
@@ -44,7 +44,7 @@ def valid_dataset_filename(test_dataset_filename) -> str:
 @pytest.fixture(scope='module')
 def valid_gdal_dataset(valid_dataset_filename: str) -> gdal.Dataset:
     '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
-    return skope.analysis.open_dataset(valid_dataset_filename)
+    return skope.open_dataset(valid_dataset_filename)
 
 @pytest.fixture(scope='module')
 def invalid_dataset_filename(test_dataset_filename: str):
@@ -71,15 +71,15 @@ def expected_invalid_dataset_file_error_message() -> str:
 
 def test_when_constructor_argument_is_none_a_datatype_exception_is_raised(expected_type_error_message: str):
     with pytest.raises(TypeError, match=expected_type_error_message):
-        skope.analysis.RasterDataset(None)
+        skope.RasterDataset(None)
 
 def test_when_constructor_argument_is_int_an_exception_is_raised(expected_type_error_message: str):
     with pytest.raises(TypeError, match=expected_type_error_message):
-        skope.analysis.RasterDataset(1)
+        skope.RasterDataset(1)
 
 def test_when_constructor_argument_is_invalid_string_an_exception_is_raised(expected_file_not_found_error_message: str):
     with pytest.raises(FileNotFoundError, match=expected_file_not_found_error_message):
-        skope.analysis.RasterDataset("path_to_nonexistent_file")
+        skope.RasterDataset("path_to_nonexistent_file")
 
 def test_when_constructor_argument_is_a_gdal_dataset_properties_are_correct(valid_gdal_dataset: gdal.Dataset):
     raster_dataset = RasterDataset(valid_gdal_dataset)

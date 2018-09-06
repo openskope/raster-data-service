@@ -2,7 +2,7 @@ import affine
 import numpy
 import os
 import osr
-import skope.analysis
+import skope
 
 from osgeo import gdal
 from typing import List, Tuple
@@ -20,7 +20,7 @@ class RasterDataset:
             pixel_width: float, pixel_height: float, 
             coordinate_system='WGS84'):
 
-        skope.analysis.create_dataset(
+        skope.create_dataset(
             filename, format, pixel_type, rows, cols, bands, origin_long, origin_lat,
             pixel_width, pixel_height, coordinate_system
         )
@@ -78,7 +78,7 @@ class RasterDataset:
     @property
     def affine(self) -> List[float]:
         if self._affine is None:
-            self._affine = skope.analysis.get_affine(self.gdal_dataset)
+            self._affine = skope.get_affine(self.gdal_dataset)
         return self._affine
 
     @property
