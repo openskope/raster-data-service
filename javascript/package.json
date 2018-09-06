@@ -22,7 +22,8 @@
     "elasticsearch": "^14.0.0",
     "glob": "^7.1.2",
     "jest": "^21.2.1",
-    "rest": "^2.0.0"
+    "rest": "^2.0.0",
+    "sshpk": "^1.14.2"
   },
   "jest": {
     "testEnvironment": "node"
