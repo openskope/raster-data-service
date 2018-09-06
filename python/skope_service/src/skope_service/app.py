@@ -1,7 +1,8 @@
-from flask import jsonify, request
-from settings import app
+from flask import Flask, jsonify, request
 
-@app.route('/timeseries-service/api/v1/status')
+app = Flask(__name__)
+
+@app.route('/')
 def get_status():
     return jsonify({'name': 'SKOPE Timeseries Service'})
 
