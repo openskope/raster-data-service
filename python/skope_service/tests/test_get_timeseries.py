@@ -8,7 +8,7 @@ def client(request):
 
 @pytest.fixture(scope='module')
 def response(client):
-    return client.get('/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0')
+    return client.get('/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=4')
 
 @pytest.fixture(scope='module')
 def response_json(response):

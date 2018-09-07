@@ -47,160 +47,160 @@ describe("When a values GET request selects first pixel of each band in 5x5x5 da
 
 });
 
-describe("When a values GET request selects first pixel of first band in 5x5x5 data cube", async () => {
+// describe("When a values GET request selects first pixel of first band in 5x5x5 data cube", async () => {
     
-	var response;
+// 	var response;
 	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=0'
-		});
-    });
+// 	beforeAll(async () => {
+// 		response = await callRESTService({
+// 		    method: 'GET',
+// 		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-123.0&latitude=45.0&start=0&end=0'
+// 		});
+//     });
 
-    it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(200);
-    });
+//     it ('HTTP response status code should be 200 - success', async function() {
+//         expect(response.status.code).toBe(200);
+//     });
 
-    it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( "0" );
-        expect(response.entity.end).toEqual( "0" );
-    });
+//     it ('Series range start and end should match the request', async function() {
+//         expect(response.entity.start).toEqual( "0" );
+//         expect(response.entity.end).toEqual( "0" );
+//     });
     
-    it ('Values should be an array with one element for the first pixel of each band', async function() {
-        expect(response.entity.values).toEqual( [100] );
-    });
+//     it ('Values should be an array with one element for the first pixel of each band', async function() {
+//         expect(response.entity.values).toEqual( [100] );
+//     });
 
-});
+// });
 
-describe("When a values GET request selects last pixel of each band in 5x5x5 data cube", async () => {
+// describe("When a values GET request selects last pixel of each band in 5x5x5 data cube", async () => {
     
-	var response;
+// 	var response;
 	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=0&end=4'
-		});
-    });
+// 	beforeAll(async () => {
+// 		response = await callRESTService({
+// 		    method: 'GET',
+// 		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=0&end=4'
+// 		});
+//     });
 
-    it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(200);
-    });
+//     it ('HTTP response status code should be 200 - success', async function() {
+//         expect(response.status.code).toBe(200);
+//     });
 
-    it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( "0" );
-        expect(response.entity.end).toEqual( "4" );
-    });
+//     it ('Series range start and end should match the request', async function() {
+//         expect(response.entity.start).toEqual( "0" );
+//         expect(response.entity.end).toEqual( "4" );
+//     });
 
-    it ('Values should be an array with one element for the first pixel of each band', async function() {
-        expect(response.entity.values).toEqual( [144,244,344,444,544] );
-    });
+//     it ('Values should be an array with one element for the first pixel of each band', async function() {
+//         expect(response.entity.values).toEqual( [144,244,344,444,544] );
+//     });
 
-});
+// });
 
-describe("When a values GET request selects last pixel of last band in 5x5x5 data cube", async () => {
+// describe("When a values GET request selects last pixel of last band in 5x5x5 data cube", async () => {
     
-	var response;
+// 	var response;
 	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=4&end=4'
-		});
-    });
+// 	beforeAll(async () => {
+// 		response = await callRESTService({
+// 		    method: 'GET',
+// 		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=4&end=4'
+// 		});
+//     });
 
-    it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(200);
-    });
+//     it ('HTTP response status code should be 200 - success', async function() {
+//         expect(response.status.code).toBe(200);
+//     });
 
-    it ('Series range start and end should match the request', async function() {
-        expect(response.entity.start).toEqual( "4" );
-        expect(response.entity.end).toEqual( "4" );
-    });
+//     it ('Series range start and end should match the request', async function() {
+//         expect(response.entity.start).toEqual( "4" );
+//         expect(response.entity.end).toEqual( "4" );
+//     });
 
-    it ('Values should be an array with one element for the first pixel of each band', async function() {
-        expect(response.entity.values).toEqual( [544] );
-    });
+//     it ('Values should be an array with one element for the first pixel of each band', async function() {
+//         expect(response.entity.values).toEqual( [544] );
+//     });
 
-});
+// });
 
-describe("When a values GET request selects last pixel of 5x5x5 data cube without specifying the bands", async () => {
+// describe("When a values GET request selects last pixel of 5x5x5 data cube without specifying the bands", async () => {
     
-	var response;
+// 	var response;
 	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0'
-		});
-    });
+// 	beforeAll(async () => {
+// 		response = await callRESTService({
+// 		    method: 'GET',
+// 		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0'
+// 		});
+//     });
 
-    it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(200);
-    });
+//     it ('HTTP response status code should be 200 - success', async function() {
+//         expect(response.status.code).toBe(200);
+//     });
 
-    it ('Series range start and end should represent all of the bands in the file', async function() {
-        expect(response.entity.start).toEqual( "0" );
-        expect(response.entity.end).toEqual( "4" );
-    });
+//     it ('Series range start and end should represent all of the bands in the file', async function() {
+//         expect(response.entity.start).toEqual( "0" );
+//         expect(response.entity.end).toEqual( "4" );
+//     });
 
-    it ('Values should be an array with one element for the first pixel of each band', async function() {
-        expect(response.entity.values).toEqual( [144,244,344,444,544] );
-    });
+//     it ('Values should be an array with one element for the first pixel of each band', async function() {
+//         expect(response.entity.values).toEqual( [144,244,344,444,544] );
+//     });
 
-});
+// });
 
 
-describe("When a values GET request selects last pixel of 5x5x5 data cube and specifies start but not end band", async () => {
+// describe("When a values GET request selects last pixel of 5x5x5 data cube and specifies start but not end band", async () => {
     
-	var response;
+// 	var response;
 	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=2'
-		});
-    });
+// 	beforeAll(async () => {
+// 		response = await callRESTService({
+// 		    method: 'GET',
+// 		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&start=2'
+// 		});
+//     });
 
-    it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(200);
-    });
+//     it ('HTTP response status code should be 200 - success', async function() {
+//         expect(response.status.code).toBe(200);
+//     });
 
-    it ('Series range start and end should represent bands from the requested start through the last band', async function() {
-        expect(response.entity.start).toEqual( "2" );
-        expect(response.entity.end).toEqual( "4" );
-    });
+//     it ('Series range start and end should represent bands from the requested start through the last band', async function() {
+//         expect(response.entity.start).toEqual( "2" );
+//         expect(response.entity.end).toEqual( "4" );
+//     });
 
-    it ('Values should be an array with one element for the first requested band through the last band', async function() {
-        expect(response.entity.values).toEqual( [344,444,544] );
-    });
+//     it ('Values should be an array with one element for the first requested band through the last band', async function() {
+//         expect(response.entity.values).toEqual( [344,444,544] );
+//     });
 
-});
+// });
 
 
-describe("When a values GET request selects last pixel of 5x5x5 data cube and specifies end but not start band", async () => {
+// describe("When a values GET request selects last pixel of 5x5x5 data cube and specifies end but not start band", async () => {
     
-	var response;
+// 	var response;
 	
-	beforeAll(async () => {
-		response = await callRESTService({
-		    method: 'GET',
-		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&end=3'
-		});
-    });
+// 	beforeAll(async () => {
+// 		response = await callRESTService({
+// 		    method: 'GET',
+// 		    path: timeseriesServiceBase + '/timeseries/annual_5x5x5_dataset/uint16_variable?longitude=-119.0&latitude=41.0&end=3'
+// 		});
+//     });
 
-    it ('HTTP response status code should be 200 - success', async function() {
-        expect(response.status.code).toBe(200);
-    });
+//     it ('HTTP response status code should be 200 - success', async function() {
+//         expect(response.status.code).toBe(200);
+//     });
 
-    it ('Series range start and end should represent bands from the first band through the requested end band', async function() {
-        expect(response.entity.start).toEqual( "0" );
-        expect(response.entity.end).toEqual( "3" );
-    });
+//     it ('Series range start and end should represent bands from the first band through the requested end band', async function() {
+//         expect(response.entity.start).toEqual( "0" );
+//         expect(response.entity.end).toEqual( "3" );
+//     });
 
-    it ('Values should be an array with one element for the first band through the requested end band', async function() {
-        expect(response.entity.values).toEqual( [144,244,344,444] );
-    });
+//     it ('Values should be an array with one element for the first band through the requested end band', async function() {
+//         expect(response.entity.values).toEqual( [144,244,344,444] );
+//     });
 
-});
+// });
