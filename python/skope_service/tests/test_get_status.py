@@ -1,18 +1,26 @@
+'''Tests the /status endpoint.'''
 import pytest
 
 from skope_service.app import app
 
+# pylint: disable=redefined-outer-name
+
 @pytest.fixture(scope='module')
-def client(request):
+def client():
+    '''Return the Flask client instance to test against.'''
     return app.test_client()
 
 @pytest.fixture(scope='module')
 def response(client):
+    '''Return the response from calling the service at the /status endpoint.'''
     return client.get('/status')
 
 @pytest.fixture(scope='module')
 def response_json(response):
+    '''Return the JSON body of response.'''
     return response.get_json()
+
+# pylint: disable=redefined-outer-name, missing-docstring
 
 def test_response_status_is_success(response):
     assert response.status == '200 OK'
