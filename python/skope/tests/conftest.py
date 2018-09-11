@@ -1,5 +1,9 @@
+''' Define fixtures shared by multiple test modules.'''
+
 import os
 import pytest
+
+# pylint: disable=redefined-outer-name
 
 @pytest.fixture(scope='session')
 def dataset_directory(tmpdir_factory):

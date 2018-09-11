@@ -15,9 +15,9 @@ import skope
 def path_to_dataset(test_dataset_filename) -> str:
     '''Create a new dataset file and return its path.'''
     path_to_dataset = test_dataset_filename(__file__)
-    skope.create_dataset(filename=path_to_dataset, file_format='GTiff',
-                         pixel_type=gdal.GDT_Float32, rows=4, cols=5,
-                         bands=6, origin_long=-123, origin_lat=45,
+    skope.create_dataset(path_to_dataset, 'GTiff', pixel_type=gdal.GDT_Float32,
+                         rows=4, cols=5, bands=6,
+                         origin_long=-123, origin_lat=45,
                          pixel_width=1.0, pixel_height=2.0,
                          coordinate_system='WGS84')
     return path_to_dataset

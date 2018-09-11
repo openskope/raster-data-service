@@ -25,10 +25,10 @@ def dataset(test_dataset_filename,
     write_pixel() functions.'''
 
     # create the new dataset
-    dataset = skope.create_dataset(filename=test_dataset_filename(__file__),
-                                   file_format='GTiff', pixel_type=gdal.GDT_Float32,
-                                   rows=2, cols=2, bands=2, origin_long=-123,
-                                   origin_lat=45, pixel_width=1.0, pixel_height=1.0,
+    dataset = skope.create_dataset(test_dataset_filename(__file__), 'GTiff', gdal.GDT_Float32,
+                                   rows=2, cols=2, bands=2,
+                                   origin_long=-123, origin_lat=45,
+                                   pixel_width=1.0, pixel_height=1.0,
                                    coordinate_system='WGS84')
 
     # set the values in band 1 with a call to write_band
