@@ -29,7 +29,7 @@ def path_to_dataset(test_dataset_filename) -> str:
     path_to_dataset = test_dataset_filename(__file__)
     skope.create_dataset(
         filename     = path_to_dataset,
-        format       = 'GTiff',
+        file_format  = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 

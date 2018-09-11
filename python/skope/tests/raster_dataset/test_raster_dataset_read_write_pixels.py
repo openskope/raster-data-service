@@ -39,7 +39,7 @@ def raster_dataset(test_dataset_filename,
 
     gdal_dataset = skope.create_dataset(
         filename     = datafile_path,
-        format       = 'GTiff',
+        file_format  = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 

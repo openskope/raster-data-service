@@ -29,7 +29,7 @@ def raster_dataset(test_dataset_filename) -> RasterDataset:
     '''Return a new RasterDataset built by the factory function.'''
     return RasterDataset.new(
         filename     = test_dataset_filename(__file__),
-        format       = 'GTiff',
+        file_format  = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 

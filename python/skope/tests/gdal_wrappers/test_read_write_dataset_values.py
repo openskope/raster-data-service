@@ -33,13 +33,13 @@ def array_assigned_to_band_index_1():
 def dataset(test_dataset_filename, 
             array_assigned_to_band_index_0, 
             array_assigned_to_band_index_1) -> gdal.Dataset:
-    '''Create a new dataset, and set its values using write_band() and 
+    '''Create a new dataset, and set its values using write_band() and
     write_pixel() functions.'''
 
     # create the new dataset
     dataset = skope.create_dataset(
         filename     = test_dataset_filename(__file__),
-        format       = 'GTiff',
+        file_format  = 'GTiff',
         pixel_type   = gdal.GDT_Float32, 
         rows         = DATASET_ROW_COUNT, 
         cols         = DATASET_COLUMN_COUNT, 
