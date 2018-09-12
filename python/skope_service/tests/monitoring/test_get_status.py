@@ -5,7 +5,7 @@ from skope_service import app
 
 # pylint: disable=redefined-outer-name
 
-@pytest.fixture(scope='module' )
+@pytest.fixture(scope='module')
 def client():
     '''Return the Flask client instance to test against.'''
     return app.test_client()
