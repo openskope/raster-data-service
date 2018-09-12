@@ -10,9 +10,9 @@ def create_dataset(
         filename: str,
         file_format: str,
         pixel_type,
-        rows: int,
-        cols: int,
         bands: int,
+        rows: int,
+        columns: int,
         origin_long: float,
         origin_lat: float,
         pixel_width: float,
@@ -24,7 +24,7 @@ def create_dataset(
     driver = gdal.GetDriverByName(file_format)
 
     # create the a new gdal.Dataset instance and corresponding data file
-    gdal_dataset = driver.Create(filename, cols, rows, bands, pixel_type)
+    gdal_dataset = driver.Create(filename, columns, rows, bands, pixel_type)
 
     # set the spatial dimensions, resolution, and orientation of the dataset
     gdal_dataset.SetGeoTransform((origin_long, pixel_width, 0, origin_lat, 0, -pixel_height))

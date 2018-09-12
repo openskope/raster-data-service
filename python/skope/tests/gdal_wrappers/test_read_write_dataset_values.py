@@ -26,7 +26,7 @@ def dataset(test_dataset_filename,
 
     # create the new dataset
     dataset = skope.create_dataset(test_dataset_filename(__file__), 'GTiff', gdal.GDT_Float32,
-                                   rows=2, cols=2, bands=2,
+                                   bands=2, rows=2, columns=2,
                                    origin_long=-123, origin_lat=45,
                                    pixel_width=1.0, pixel_height=1.0,
                                    coordinate_system='WGS84')

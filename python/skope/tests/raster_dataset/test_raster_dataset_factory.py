@@ -12,10 +12,9 @@ from skope import RasterDataset
 @pytest.fixture(scope='module')
 def raster_dataset(test_dataset_filename) -> RasterDataset:
     '''Return a new RasterDataset built by the factory function.'''
-    return RasterDataset.new(test_dataset_filename(__file__), 'GTiff', gdal.GDT_Float32,
-                             rows=4, cols=5, bands=6,
-                             origin_long=-123, origin_lat=45,
-                             pixel_width=1.0, pixel_height=2.0,
+    return RasterDataset.new(test_dataset_filename(__file__), 'GTiff',
+                             gdal.GDT_Float32, shape=(6, 4, 5),
+                             origin=(-123.0, 45.0), pixel_size=(1.0, 2.0),
                              coordinate_system='WGS84')
 
 @pytest.fixture(scope='module')

@@ -10,15 +10,19 @@ class RasterDataset:
     '''Class representing a GDAL-compatible raster dataset.'''
     @staticmethod
     def new(filename: str, file_format: str, pixel_type,
-            rows: int, cols: int, bands: int,
-            origin_long: float, origin_lat: float,
-            pixel_width: float, pixel_height: float,
-            coordinate_system='WGS84'):
+            shape: Tuple[float, float, float],
+            origin: Tuple[float, float],
+            pixel_size: Tuple[float, float],
+            coordinate_system: str = 'WGS84'):
         '''Create a new GDAL dataset, flush it to disk, and return a
         RasterDataset referencing it.'''
+
         skope.create_dataset(
-            filename, file_format, pixel_type, rows, cols, bands, origin_long,
-            origin_lat, pixel_width, pixel_height, coordinate_system
+            filename, file_format, pixel_type,
+            bands=shape[0], rows=shape[1], columns=shape[2],
+            origin_long=origin[0], origin_lat=origin[1],
+            pixel_width=pixel_size[0], pixel_height=pixel_size[1],
+            coordinate_system=coordinate_system
         )
 
         return RasterDataset(filename)

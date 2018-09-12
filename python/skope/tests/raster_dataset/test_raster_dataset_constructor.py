@@ -14,7 +14,7 @@ def valid_dataset_filename(test_dataset_filename) -> str:
     '''Return a new gdal.Dataset instance'''
     valid_dataset_filename = test_dataset_filename(__file__)
     skope.create_dataset(valid_dataset_filename, 'GTiff', gdal.GDT_Float32,
-                         rows=3, cols=2, bands=4,
+                         bands=4, rows=3, columns=2,
                          origin_long=-123, origin_lat=45,
                          pixel_width=1.0, pixel_height=2.0,
                          coordinate_system='WGS84')
