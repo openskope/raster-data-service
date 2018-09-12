@@ -1,11 +1,11 @@
 '''Tests the /status endpoint.'''
 import pytest
 
-from skope_service.app import app
+from skope_service import app
 
 # pylint: disable=redefined-outer-name
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='module' )
 def client():
     '''Return the Flask client instance to test against.'''
     return app.test_client()

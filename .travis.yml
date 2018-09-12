@@ -27,7 +27,6 @@ install:
 
 script:
   - pylint -v python
-  - pytest -v python/skope
-  - pytest -v python/skope_service
+  - pytest -v python
 
 

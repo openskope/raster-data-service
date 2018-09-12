@@ -1,7 +1,7 @@
 '''Test the /timeseries endpoint.'''
 import pytest
 
-from skope_service.app import app
+from skope_service import app
 
 # pylint: disable=redefined-outer-name
 
