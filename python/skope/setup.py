@@ -1,4 +1,4 @@
-
+'''Install the skope package.'''
 from setuptools import setup
 
 setup(
@@ -11,7 +11,7 @@ setup(
     license='MIT',
     packages=['skope'],
     package_dir={'': 'src'},
-    data_files = [("", ["LICENSE.txt"])],
+    data_files=[("", ["LICENSE.txt"])],
     install_requires=['affine >= 2.2.1', 'typing >= 3.6.6'],
     scripts=['scripts/series.py']
 )

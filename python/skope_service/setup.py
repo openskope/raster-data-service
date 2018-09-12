@@ -1,4 +1,4 @@
-
+'''Install the skope-service package.'''
 from setuptools import setup
 
 setup(
@@ -11,6 +11,6 @@ setup(
     license='MIT',
     packages=['skope_service'],
     package_dir={'': 'src'},
-    data_files = [("", ["LICENSE.txt"])],
+    data_files=[("", ["LICENSE.txt"])],
     install_requires=['skope==0.1.0', 'typing >= 3.6.6', 'Flask >= 1.0.2']
 )

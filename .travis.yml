@@ -24,6 +24,9 @@ install:
   - pip install ./python/skope
   - pip install ./python/skope_service
 
-script: pytest -v
+script:
+  - pylint -v python
+  - pytest -v python/skope
+  - pytest -v python/skope_service
 
 
