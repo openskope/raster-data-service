@@ -2,9 +2,10 @@
 import os
 from typing import List, Tuple
 
+import affine
 import numpy
 from osgeo import gdal
-import skope
+import osr
 
 class RasterDataset:
     '''Class representing a GDAL-compatible raster dataset.'''
@@ -17,43 +18,58 @@ class RasterDataset:
         '''Create a new GDAL dataset, flush it to disk, and return a
         RasterDataset referencing it.'''
 
-        skope.create_dataset(
-            filename, file_format, pixel_type,
-            bands=shape[0], rows=shape[1], columns=shape[2],
-            origin_long=origin[0], origin_lat=origin[1],
-            pixel_width=pixel_size[0], pixel_height=pixel_size[1],
-            coordinate_system=coordinate_system
-        )
+        # get the GDAL driver for the specified dataset file format
+        driver = gdal.GetDriverByName(file_format)
 
+        # create the a new gdal.Dataset instance and corresponding data file
+        gdal_dataset = driver.Create(filename, shape[2], shape[1], shape[0], pixel_type)
+
+        # set the spatial dimensions, resolution, and orientation of the dataset
+        gdal_dataset.SetGeoTransform((origin[0], pixel_size[0], 0, origin[1], 0, -pixel_size[1]))
+
+        # set the geospatial projection and coordinate system for the dataset
+        srs = osr.SpatialReference()
+        srs.SetWellKnownGeogCS(coordinate_system)
+        gdal_dataset.SetProjection(srs.ExportToWkt())
+
+        # flush gdal.Dataset object to disk and close
+        gdal_dataset = None
+
+        # return a new RasterData object referencing the new file
         return RasterDataset(filename)
 
     def __init__(self, dataset):
         '''Initialize a RasterDataset either from gdal.Dataset object or a path
         to a GDAL-compatible raster dataset file.'''
-        self.gdal_dataset, self.filename = _get_gdal_dataset_for_argument(dataset)
-        self._geotransform = self.gdal_dataset.GetGeoTransform()
+        self._gdal_dataset, self.filename = _get_gdal_dataset_for_argument(dataset)
+        self._geotransform = self._gdal_dataset.GetGeoTransform()
         self._affine = None
         self._inverse_affine = None
-        self._array = self.gdal_dataset.ReadAsArray()
+        self._array = self._gdal_dataset.ReadAsArray()
 
         # ensure that the latitudinal axis of the dataset points north
         if not self.geotransform[5] < 0:
             raise ValueError('The dataset ' + self.filename + ' is not northup')
 
     @property
+    def gdal_dataset(self) -> gdal.Dataset:
+        '''Return reference to the underlying gdal.Dataset object.'''
+        return self._gdal_dataset
+
+    @property
     def bands(self) -> int:
         '''Return the number of bands in the raster dataset.'''
-        return self.gdal_dataset.RasterCount
+        return self._gdal_dataset.RasterCount
 
     @property
     def rows(self) -> int:
         '''Return the number of rows of pixels in the raster dataset.'''
-        return self.gdal_dataset.RasterYSize
+        return self._gdal_dataset.RasterYSize
 
     @property
     def cols(self) -> int:
         '''Return the number of columns of pixels in the raster dataset.'''
-        return self.gdal_dataset.RasterXSize
+        return self._gdal_dataset.RasterXSize
 
     @property
     def shape(self) -> Tuple[int]:
@@ -97,7 +113,9 @@ class RasterDataset:
     def affine(self) -> List[float]:
         '''Return the affine matrix for the dataset.'''
         if self._affine is None:
-            self._affine = skope.get_affine(self.gdal_dataset)
+            gt = self.geotransform # pylint: disable=invalid-name
+            self._affine = affine.Affine.from_gdal(gt[0], gt[1], gt[2],
+                                                   gt[3], gt[4], gt[5])
         return self._affine
 
     @property
@@ -187,9 +205,40 @@ class RasterDataset:
         row, column = self.pixel_at_point(longitude, latitude)
         return self.series_at_pixel(row, column, begin, end)
 
+    def write_band(self, band_index: int, array: numpy.ndarray, nodata) -> None:
+        '''Copy a 2D numpy array to the specified band of a gdal.Dataset.'''
+        band_number = band_index + 1
+        selected_band = self._gdal_dataset.GetRasterBand(band_number)
+        selected_band.WriteArray(array)
+        selected_band.SetNoDataValue(nodata)
+        selected_band.FlushCache()
+
+    def read_band(self, band_index: int) -> numpy.ndarray:
+        '''Return pixel values of one band of a gdal.Dataset as a 2D numpy array.'''
+        band_number = band_index + 1
+        selected_band = self._gdal_dataset.GetRasterBand(band_number)
+        return selected_band.ReadAsArray()
+
+    def read_pixel(self, band_index: int, row: int, column: int) -> numpy.ndarray:
+        '''Read one pixel of a gdal.Dataset.'''
+        band_number = band_index + 1
+        selected_band = self._gdal_dataset.GetRasterBand(band_number)
+        pixel_array = selected_band.ReadAsArray()
+        return pixel_array[row, column]
+
+    def write_pixel(self, band_index: int, row: int, column: int, value) -> None:
+        '''Write value to one pixel of a gdal.Dataset.'''
+        band_number = band_index + 1
+        selected_band = self._gdal_dataset.GetRasterBand(band_number)
+        array = selected_band.ReadAsArray()
+        array[row, column] = value
+        selected_band.WriteArray(array)
+        selected_band.FlushCache()
+
+
 # Private helper methods
 
-def _get_gdal_dataset_for_argument(dataset) -> (gdal.Dataset, str):
+def _get_gdal_dataset_for_argument(dataset, access=gdal.GA_Update) -> (gdal.Dataset, str):
     '''Examine the dataset argument and return, as a tuple, the corresponding gdal.Dataset object
     and the path to the dataset file if known.'''
 
@@ -205,7 +254,7 @@ def _get_gdal_dataset_for_argument(dataset) -> (gdal.Dataset, str):
         if not os.path.isfile(gdal_dataset_path):
             raise FileNotFoundError('Dataset file not found at path ' + gdal_dataset_path)
 
-        gdal_dataset = gdal.Open(gdal_dataset_path)
+        gdal_dataset = gdal.Open(gdal_dataset_path, access)
         if gdal_dataset is None:
             raise ValueError('Invalid dataset file found at path ' + gdal_dataset_path)
 

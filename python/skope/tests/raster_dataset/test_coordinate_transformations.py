@@ -12,8 +12,7 @@ def raster_dataset(test_dataset_filename) -> RasterDataset:
     '''Return a new RasterDataset.'''
     return RasterDataset.new(test_dataset_filename(__file__), 'GTiff',
                              gdal.GDT_Float32, shape=(6, 4, 5),
-                             origin=(-123, 45),
-                             pixel_size=(1.0, 2.0),
+                             origin=(-123, 45), pixel_size=(1.0, 2.0),
                              coordinate_system='WGS84')
 
 # pylint: disable=redefined-outer-name, missing-docstring, line-too-long

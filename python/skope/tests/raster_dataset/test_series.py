@@ -5,7 +5,6 @@ import pytest
 import numpy
 from osgeo import gdal
 
-import skope
 from skope import RasterDataset
 
 # pylint: disable=redefined-outer-name
@@ -22,23 +21,22 @@ def raster_dataset(test_dataset_filename,
 
     datafile_path = test_dataset_filename(__file__)
 
-    gdal_dataset = skope.create_dataset(datafile_path, 'GTiff', gdal.GDT_Float32,
-                                        bands=10, rows=2, columns=2,
-                                        origin_long=-123, origin_lat=45,
-                                        pixel_width=1.0, pixel_height=1.0,
-                                        coordinate_system='WGS84')
+    raster_dataset = RasterDataset.new(datafile_path, 'GTiff', gdal.GDT_Float32,
+                                       shape=(10, 2, 2),
+                                       origin=(-123, 45),
+                                       pixel_size=(1.0, 1.0),
+                                       coordinate_system='WGS84')
 
     # set the values in band 1 with a call to write_band
     for band_index in range(0, 10):
-        skope.write_band(
-            gdal_dataset,
+        raster_dataset.write_band(
             band_index,
             array_assigned_to_band_index_0 + 10 * band_index,
             float('nan'))
 
-    gdal_dataset = None
+    raster_dataset = None
 
-    return skope.RasterDataset(datafile_path)
+    return RasterDataset(datafile_path)
 
 # pylint: disable=redefined-outer-name, missing-docstring, line-too-long
 

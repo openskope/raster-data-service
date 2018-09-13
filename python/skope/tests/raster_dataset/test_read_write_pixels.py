@@ -4,7 +4,6 @@ import pytest
 import numpy as np
 from osgeo import gdal
 
-import skope
 from skope import RasterDataset
 
 # pylint: disable=redefined-outer-name
@@ -28,23 +27,22 @@ def raster_dataset(test_dataset_filename,
 
     datafile_path = test_dataset_filename(__file__)
 
-    gdal_dataset = skope.create_dataset(datafile_path, 'GTiff', gdal.GDT_Float32,
-                                        bands=2, rows=2, columns=2,
-                                        origin_long=-123, origin_lat=45,
-                                        pixel_width=1.0, pixel_height=1.0,
-                                        coordinate_system='WGS84')
+    raster_dataset = RasterDataset.new(datafile_path, 'GTiff', gdal.GDT_Float32,
+                                       shape=(2, 2, 2), origin=(-123, 45),
+                                       pixel_size=(1.0, 1.0),
+                                       coordinate_system='WGS84')
 
     # set the values in bands 0 and 1 with calls to write_band
-    skope.write_band(gdal_dataset, 0, array_assigned_to_band_index_0, float('nan'))
-    skope.write_band(gdal_dataset, 1, array_assigned_to_band_index_1, float('nan'))
+    raster_dataset.write_band(0, array_assigned_to_band_index_0, float('nan'))
+    raster_dataset.write_band(1, array_assigned_to_band_index_1, float('nan'))
 
-    gdal_dataset = None
+    raster_dataset = None
 
     return RasterDataset(datafile_path)
 
 # pylint: disable=redefined-outer-name, missing-docstring, line-too-long
 
-def test_value_at_pixel_returns_value_of_each_pixel_in_dataset(raster_dataset: int):
+def test_value_at_pixel_returns_value_of_each_pixel_in_dataset(raster_dataset: RasterDataset):
     assert raster_dataset.value_at_pixel(band_index=0, row=0, column=0) == 1
     assert raster_dataset.value_at_pixel(band_index=0, row=0, column=1) == 2
     assert raster_dataset.value_at_pixel(band_index=0, row=1, column=0) == 3

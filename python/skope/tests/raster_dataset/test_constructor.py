@@ -13,17 +13,15 @@ from skope import RasterDataset
 def valid_dataset_filename(test_dataset_filename) -> str:
     '''Return a new gdal.Dataset instance'''
     valid_dataset_filename = test_dataset_filename(__file__)
-    skope.create_dataset(valid_dataset_filename, 'GTiff', gdal.GDT_Float32,
-                         bands=4, rows=3, columns=2,
-                         origin_long=-123, origin_lat=45,
-                         pixel_width=1.0, pixel_height=2.0,
-                         coordinate_system='WGS84')
+    RasterDataset.new(valid_dataset_filename, 'GTiff', gdal.GDT_Float32,
+                      shape=(4, 3, 2), origin=(-123, 45), pixel_size=(1.0, 2.0),
+                      coordinate_system='WGS84')
     return valid_dataset_filename
 
 @pytest.fixture(scope='module')
 def valid_gdal_dataset(valid_dataset_filename: str) -> gdal.Dataset:
     '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
-    return skope.open_dataset(valid_dataset_filename)
+    return gdal.Open(valid_dataset_filename)
 
 @pytest.fixture(scope='module')
 def invalid_dataset_filename(test_dataset_filename: str):

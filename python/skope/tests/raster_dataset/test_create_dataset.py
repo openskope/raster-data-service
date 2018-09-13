@@ -15,17 +15,17 @@ import skope
 def path_to_dataset(test_dataset_filename) -> str:
     '''Create a new dataset file and return its path.'''
     path_to_dataset = test_dataset_filename(__file__)
-    skope.create_dataset(path_to_dataset, 'GTiff', pixel_type=gdal.GDT_Float32,
-                         bands=6, rows=4, columns=5,
-                         origin_long=-123, origin_lat=45,
-                         pixel_width=1.0, pixel_height=2.0,
-                         coordinate_system='WGS84')
+    skope.RasterDataset.new(path_to_dataset, 'GTiff', gdal.GDT_Float32,
+                            shape=(6, 4, 5),
+                            origin=(-123, 45),
+                            pixel_size=(1.0, 2.0),
+                            coordinate_system='WGS84')
     return path_to_dataset
 
 @pytest.fixture(scope='module')
 def dataset(path_to_dataset) -> gdal.Dataset:
     '''Open the new dataset file with GDAL and return a gdal.Dataset object.'''
-    return skope.open_dataset(path_to_dataset)
+    return gdal.Open(path_to_dataset)
 
 @pytest.fixture(scope='module')
 def metadata(dataset) -> Dict:
