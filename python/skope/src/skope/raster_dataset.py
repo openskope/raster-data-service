@@ -226,6 +226,11 @@ class RasterDataset:
         selected_band.WriteArray(array)
         selected_band.FlushCache()
 
+    def flush(self) -> None:
+        '''Flush any changes in the dataset to the file on disk and reopen it.'''
+        self._gdal_dataset.FlushCache()
+        self._gdal_dataset = gdal.Open(self.filename, gdal.GA_Update)
+        self._array = self._gdal_dataset.ReadAsArray()
 
 # Private helper methods
 

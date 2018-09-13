@@ -36,9 +36,9 @@ def raster_dataset(test_dataset_filename,
     raster_dataset.write_band(0, array_assigned_to_band_index_0, float('nan'))
     raster_dataset.write_band(1, array_assigned_to_band_index_1, float('nan'))
 
-    raster_dataset = None
+    raster_dataset.flush()
 
-    return RasterDataset(datafile_path)
+    return raster_dataset
 
 # pylint: disable=redefined-outer-name, missing-docstring, line-too-long
 
