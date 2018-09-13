@@ -52,14 +52,14 @@ def test_write_band_sets_assigns_expected_pixel_values(
         raster_dataset: RasterDataset, array_assigned_to_band_index_0):
     assert np.array_equal(
         array_assigned_to_band_index_0,
-        raster_dataset.gdal_dataset.GetRasterBand(1).ReadAsArray()
+        raster_dataset._gdal_dataset.GetRasterBand(1).ReadAsArray()  # pylint: disable=protected-access
     )
 
 def test_write_pixel_sets_assigns_expected_pixel_values(
         raster_dataset: RasterDataset, array_assigned_to_band_index_1):
     assert np.array_equal(
         array_assigned_to_band_index_1,
-        raster_dataset.gdal_dataset.GetRasterBand(2).ReadAsArray()
+        raster_dataset._gdal_dataset.GetRasterBand(2).ReadAsArray() # pylint: disable=protected-access
     )
 
 def test_read_band_returns_expected_pixel_values(

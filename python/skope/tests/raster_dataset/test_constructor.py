@@ -72,8 +72,8 @@ def test_when_constructor_argument_is_a_gdal_dataset_properties_are_correct(
         valid_gdal_dataset: gdal.Dataset
     ):
     raster_dataset = RasterDataset(valid_gdal_dataset)
+    assert raster_dataset._gdal_dataset == valid_gdal_dataset # pylint: disable=protected-access
     assert raster_dataset.filename is None
-    assert raster_dataset.gdal_dataset == valid_gdal_dataset
     assert raster_dataset.shape == (4, 3, 2)
     assert raster_dataset.bands == 4
     assert raster_dataset.rows == 3

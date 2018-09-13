@@ -20,7 +20,7 @@ def raster_dataset(test_dataset_filename) -> RasterDataset:
 @pytest.fixture(scope='module')
 def gdal_dataset(raster_dataset) -> gdal.Dataset:
     '''Return the gdal datset backing the new RasterDataset.'''
-    return raster_dataset.gdal_dataset
+    return raster_dataset._gdal_dataset # pylint: disable=protected-access
 
 @pytest.fixture(scope='module')
 def metadata(gdal_dataset) -> Dict:

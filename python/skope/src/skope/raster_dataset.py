@@ -52,11 +52,6 @@ class RasterDataset:
             raise ValueError('The dataset ' + self.filename + ' is not northup')
 
     @property
-    def gdal_dataset(self) -> gdal.Dataset:
-        '''Return reference to the underlying gdal.Dataset object.'''
-        return self._gdal_dataset
-
-    @property
     def bands(self) -> int:
         '''Return the number of bands in the raster dataset.'''
         return self._gdal_dataset.RasterCount
