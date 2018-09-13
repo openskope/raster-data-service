@@ -26,12 +26,12 @@ def raster_dataset(test_dataset_filename,
 
     # create the new dataset
     dataset_file = test_dataset_filename(__file__)
-    raster_dataset = RasterDataset.new(dataset_file,
-                                       'GTiff', gdal.GDT_Float32,
-                                       shape=(2, 2, 2),
-                                       origin=(-123, 45),
-                                       pixel_size=(1.0, 1.0),
-                                       coordinate_system='WGS84')
+    raster_dataset = RasterDataset.create(dataset_file,
+                                          'GTiff', gdal.GDT_Float32,
+                                          shape=(2, 2, 2),
+                                          origin=(-123, 45),
+                                          pixel_size=(1.0, 1.0),
+                                          coordinate_system='WGS84')
 
     # set the values in band 1 with a call to write_band
     raster_dataset.write_band(0, array_assigned_to_band_index_0, float('Nan'))

@@ -15,11 +15,10 @@ import skope
 def path_to_dataset(test_dataset_filename) -> str:
     '''Create a new dataset file and return its path.'''
     path_to_dataset = test_dataset_filename(__file__)
-    skope.RasterDataset.new(path_to_dataset, 'GTiff', gdal.GDT_Float32,
-                            shape=(6, 4, 5),
-                            origin=(-123, 45),
-                            pixel_size=(1.0, 2.0),
-                            coordinate_system='WGS84')
+    skope.RasterDataset.create(path_to_dataset, 'GTiff', gdal.GDT_Float32,
+                               shape=(6, 4, 5), origin=(-123, 45),
+                               pixel_size=(1.0, 2.0),
+                               coordinate_system='WGS84')
     return path_to_dataset
 
 @pytest.fixture(scope='module')

@@ -10,11 +10,11 @@ import osr
 class RasterDataset:
     '''Class representing a GDAL-compatible raster dataset.'''
     @staticmethod
-    def new(filename: str, file_format: str, pixel_type,
-            shape: Tuple[float, float, float],
-            origin: Tuple[float, float],
-            pixel_size: Tuple[float, float],
-            coordinate_system: str = 'WGS84'):
+    def create(filename: str, file_format: str, pixel_type,
+               shape: Tuple[float, float, float],
+               origin: Tuple[float, float],
+               pixel_size: Tuple[float, float],
+               coordinate_system: str = 'WGS84'):
         '''Create a new GDAL dataset, flush it to disk, and return a
         RasterDataset referencing it.'''
 
