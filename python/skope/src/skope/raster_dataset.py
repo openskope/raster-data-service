@@ -205,29 +205,20 @@ class RasterDataset:
         row, column = self.pixel_at_point(longitude, latitude)
         return self.series_at_pixel(row, column, begin, end)
 
+    def read_band(self, band_index: int) -> numpy.ndarray:
+        '''Return pixel values of one band of the dataset as a 2D numpy array.'''
+        return self._array[band_index]
+
     def write_band(self, band_index: int, array: numpy.ndarray, nodata) -> None:
-        '''Copy a 2D numpy array to the specified band of a gdal.Dataset.'''
+        '''Copy a 2D numpy array to the specified band of the dataset.'''
         band_number = band_index + 1
         selected_band = self._gdal_dataset.GetRasterBand(band_number)
         selected_band.WriteArray(array)
         selected_band.SetNoDataValue(nodata)
         selected_band.FlushCache()
 
-    def read_band(self, band_index: int) -> numpy.ndarray:
-        '''Return pixel values of one band of a gdal.Dataset as a 2D numpy array.'''
-        band_number = band_index + 1
-        selected_band = self._gdal_dataset.GetRasterBand(band_number)
-        return selected_band.ReadAsArray()
-
-    def read_pixel(self, band_index: int, row: int, column: int) -> numpy.ndarray:
-        '''Read one pixel of a gdal.Dataset.'''
-        band_number = band_index + 1
-        selected_band = self._gdal_dataset.GetRasterBand(band_number)
-        pixel_array = selected_band.ReadAsArray()
-        return pixel_array[row, column]
-
     def write_pixel(self, band_index: int, row: int, column: int, value) -> None:
-        '''Write value to one pixel of a gdal.Dataset.'''
+        '''Write value to one pixel of the dataset.'''
         band_number = band_index + 1
         selected_band = self._gdal_dataset.GetRasterBand(band_number)
         array = selected_band.ReadAsArray()

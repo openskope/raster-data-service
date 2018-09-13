@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 from osgeo import gdal
 
-import skope
+from skope import RasterDataset
 
 # pylint: disable=redefined-outer-name
 
@@ -25,12 +25,13 @@ def raster_dataset(test_dataset_filename,
     write_pixel() functions.'''
 
     # create the new dataset
-    raster_dataset = skope.RasterDataset.new(test_dataset_filename(__file__),
-                                             'GTiff', gdal.GDT_Float32,
-                                             shape=(2, 2, 2),
-                                             origin=(-123, 45),
-                                             pixel_size=(1.0, 1.0),
-                                             coordinate_system='WGS84')
+    dataset_file = test_dataset_filename(__file__)
+    raster_dataset = RasterDataset.new(dataset_file,
+                                       'GTiff', gdal.GDT_Float32,
+                                       shape=(2, 2, 2),
+                                       origin=(-123, 45),
+                                       pixel_size=(1.0, 1.0),
+                                       coordinate_system='WGS84')
 
     # set the values in band 1 with a call to write_band
     raster_dataset.write_band(0, array_assigned_to_band_index_0, float('Nan'))
@@ -41,34 +42,36 @@ def raster_dataset(test_dataset_filename,
     raster_dataset.write_pixel(1, 1, 0, array_assigned_to_band_index_1[1, 0])
     raster_dataset.write_pixel(1, 1, 1, array_assigned_to_band_index_1[1, 1])
 
-    return raster_dataset
+    raster_dataset = None
+
+    return RasterDataset(dataset_file)
 
 # pylint: disable=redefined-outer-name, missing-docstring, line-too-long
 
 def test_write_band_sets_assigns_expected_pixel_values(
-        raster_dataset: skope.RasterDataset, array_assigned_to_band_index_0):
+        raster_dataset: RasterDataset, array_assigned_to_band_index_0):
     assert np.array_equal(
         array_assigned_to_band_index_0,
         raster_dataset.gdal_dataset.GetRasterBand(1).ReadAsArray()
     )
 
 def test_write_pixel_sets_assigns_expected_pixel_values(
-        raster_dataset: skope.RasterDataset, array_assigned_to_band_index_1):
+        raster_dataset: RasterDataset, array_assigned_to_band_index_1):
     assert np.array_equal(
         array_assigned_to_band_index_1,
         raster_dataset.gdal_dataset.GetRasterBand(2).ReadAsArray()
     )
 
 def test_read_band_returns_expected_pixel_values(
-        raster_dataset: skope.RasterDataset, array_assigned_to_band_index_0):
+        raster_dataset: RasterDataset, array_assigned_to_band_index_0):
     assert np.array_equal(
         array_assigned_to_band_index_0,
         raster_dataset.read_band(0)
     )
 
 def test_read_pixel_returns_expected_pixel_values(
-        raster_dataset: skope.RasterDataset, array_assigned_to_band_index_1):
-    assert raster_dataset.read_pixel(1, 0, 0) == array_assigned_to_band_index_1[0, 0]
-    assert raster_dataset.read_pixel(1, 0, 1) == array_assigned_to_band_index_1[0, 1]
-    assert raster_dataset.read_pixel(1, 1, 0) == array_assigned_to_band_index_1[1, 0]
-    assert raster_dataset.read_pixel(1, 1, 1) == array_assigned_to_band_index_1[1, 1]
+        raster_dataset: RasterDataset, array_assigned_to_band_index_1):
+    assert raster_dataset.value_at_pixel(1, 0, 0) == array_assigned_to_band_index_1[0, 0]
+    assert raster_dataset.value_at_pixel(1, 0, 1) == array_assigned_to_band_index_1[0, 1]
+    assert raster_dataset.value_at_pixel(1, 1, 0) == array_assigned_to_band_index_1[1, 0]
+    assert raster_dataset.value_at_pixel(1, 1, 1) == array_assigned_to_band_index_1[1, 1]
