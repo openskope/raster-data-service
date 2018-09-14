@@ -1,4 +1,4 @@
-'''Tests of the RasterDataset factory method.'''
+'''Test the RasterDataset.create() method by working with new RasterDataset object.'''
 
 import os
 from typing import List, Dict
