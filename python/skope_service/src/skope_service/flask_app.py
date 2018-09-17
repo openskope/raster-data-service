@@ -1,22 +1,25 @@
 '''Define endpoints for timeseries service.'''
-import sys
+
 from flask import Flask, jsonify, request
 
+# create the Flask application instance
 app = Flask(__name__)  # pylint: disable=invalid-name
 
-if 'pytest' not in sys.modules:
-    APPLICATION_ROOT = '/timeseries-service/api/v1'
-else:
-    APPLICATION_ROOT = ''
+# configure the Flask application with the default settings
+app.config.from_object('skope_service.default_settings')
 
-@app.route(APPLICATION_ROOT + '/status')
+# extract the service base URI path from the configuration
+SERVICE_BASE = app.config['TIMESERIES_SERVICE_BASE']
+
+@app.route(SERVICE_BASE + '/status')
 def get_status():
     '''Return the name and status of the timeseries service.'''
-    return jsonify({'name': 'SKOPE Timeseries Service'})
+    return jsonify({'name': app.config['TIMESERIES_SERVICE_NAME']})
 
-@app.route(APPLICATION_ROOT + '/timeseries/<dataset_id>/<variable_name>')
+@app.route(SERVICE_BASE + '/timeseries/<dataset_id>/<variable_name>')
 def get_timeseries(dataset_id, variable_name):
     '''Return the timeseries at specified point.'''
+
     longitude = float(request.args.get('longitude'))
     latitude = float(request.args.get('latitude'))
     start = request.args.get('start')
