@@ -2,6 +2,8 @@
 
 from flask import Flask, jsonify, request
 
+from skope import RasterDataset
+
 # create the Flask application instance
 app = Flask(__name__)  # pylint: disable=invalid-name
 
@@ -25,6 +27,13 @@ def get_timeseries(dataset_id, variable_name):
     start = request.args.get('start')
     end = request.args.get('end')
 
+    raster_dataset = RasterDataset(
+        '/c/Users/tmcphill/GitRepos/timeseries-service/data/' + dataset_id + '_' + variable_name + '.tif')
+
+    begin = None if start is None else int(start)
+    end = None if end is None else int(end) + 1
+    series = list(raster_dataset.series_at_point(longitude, latitude, begin, end))
+
     response_body = {
         'datasetId': dataset_id,
         'variableName': variable_name,
@@ -32,9 +41,9 @@ def get_timeseries(dataset_id, variable_name):
             'type': 'Point',
             'coordinates': [longitude, latitude]
         },
-        'start': start,
-        'end': end,
-        'values': [100, 200, 300, 400, 500]
+        'start': '0' if begin is None else str(begin),
+        'end': '4' if end is None else str(end-1),
+        'values': series
     }
 
     return jsonify(response_body)
