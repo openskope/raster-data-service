@@ -28,7 +28,7 @@ def get_timeseries(dataset_id, variable_name):
     end = request.args.get('end')
 
     raster_dataset = RasterDataset(
-        '/c/Users/tmcphill/GitRepos/timeseries-service/data/' + dataset_id + '_' + variable_name + '.tif')
+        'data/' + dataset_id + '_' + variable_name + '.tif')
 
     begin = None if start is None else int(start)
     end = None if end is None else int(end) + 1
