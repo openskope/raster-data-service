@@ -49,7 +49,10 @@ class RasterDataset:
 
         # ensure that the latitudinal axis of the dataset points north
         if not self.geotransform[5] < 0:
-            raise ValueError('The dataset ' + self.filename + ' is not northup')
+            raise ValueError('The dataset ' + self + ' is not northup')
+
+    def __repr__(self):
+        return "RasterDataset('{}')".format(os.path.basename(self.filename))
 
     @property
     def bands(self) -> int:

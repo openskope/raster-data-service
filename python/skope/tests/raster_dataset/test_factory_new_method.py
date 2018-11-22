@@ -39,6 +39,9 @@ def first_band(gdal_dataset) -> gdal.Band:
 
 # pylint: disable=redefined-outer-name, missing-docstring, line-too-long
 
+def test_str_is_correct(raster_dataset: RasterDataset):
+    assert str(raster_dataset) == "RasterDataset('test_factory_new_method.tif')"
+
 def test_fixture_is_instance_of_raster_dataset(raster_dataset: RasterDataset):
     assert str((type(raster_dataset))) == "<class 'skope.raster_dataset.RasterDataset'>"
 
