@@ -1,12 +1,14 @@
 FROM openjdk:8-jdk-slim-buster
 
 ARG MODE=
-ENV MODE  $MODE
+ENV MODE $MODE
 ENV REPRO_NAME  timeseries-service
 ENV REPRO_MNT   /mnt/${REPRO_NAME}
 ENV REPRO_USER  repro
 ENV REPRO_UID   1000
 ENV REPRO_GID   1000
+
+RUN echo "MODE=${MODE}"
 
 RUN echo '***** Update package index *****'                                 \
  && apt -y update                                                           \
@@ -36,7 +38,7 @@ RUN echo '***** download source package for GDAL 2.1.2 *****'               \
                 --with-python=$(which python2)                              \
  && make install                                                            \
                                                                             \
- && if [ $MODE == "prod" ] ; then                                           \
+ && if [ "$MODE" = "prod" ] ; then                                          \
     echo '**** clean up GDAL build directories *****'                       \
     && rm -rf /tmp/builds                                                   \
 ; fi
@@ -60,10 +62,18 @@ RUN echo '***** Download and install maven *****'                           \
 
 ENV PATH /opt/maven-3/bin:$PATH
 
-RUN if [ ! $MODE == "prod"  ] ; then                                        \
- && echo '***** Download and install Node.js from NodeSource *****'         \
+RUN if [ ! "$MODE" = "prod"  ] ; then                                       \
+ echo '***** Download and install Node.js from NodeSource *****'            \
  && curl -sL https://deb.nodesource.com/setup_15.x | bash -                 \
  && apt install -y nodejs                                                   \
+; fi
+
+COPY service /mnt/timeseries-service/service
+COPY data  /mnt/timeseries-service/data
+
+RUN if [ "$MODE" = "prod" ] ; then                                           \
+    rm ${REPRO_MNT}/service/logs/* ;                                         \
+    chown -R ${REPRO_UID}.${REPRO_GID} ${REPRO_MNT}/service                               \
 ; fi
 
 RUN echo '***** Add the REPRO user and group *****'                         \
@@ -91,5 +101,7 @@ RUN echo '***** Clone geoserver-loader repo and install CLI tools *****'    \
 RUN echo "PATH=${PATH}" >> ${BASHRC}
 RUN echo "export IN_RUNNING_REPRO=${REPRO_NAME}" >> ${BASHRC}
 RUN echo "cd ${REPRO_MNT}" >> ${BASHRC}
+
+RUN echo "MODE=${MODE}"
 
 CMD  /bin/bash -il

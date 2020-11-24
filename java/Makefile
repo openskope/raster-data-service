@@ -8,7 +8,7 @@ build:
 	
 package: build
 	mvn package
-	cp target/timeseries-service-0.2.1.jar ${REPRO_MNT}/service/
+	cp target/timeseries-service-*.jar ${REPRO_MNT}/service/
 
 test: package
 	make -C ../service run &

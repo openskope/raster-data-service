@@ -4,13 +4,13 @@ services:
 
   timeseries-service:
     image: openskope/timeseries-service:latest
-    command: start
+    command: /mnt/timeseries-service/service/run.sh
     restart: always
-    environment:
-      TIMESERIES_DATA_PATH_TEMPLATE: /projects/GitRepos/timeseries-service/data/{datasetId}_{variableName}
-      TIMESERIES_UNCERTAINTY_PATH_TEMPLATE: /projects/GitRepos/timeseries-service/data/{datasetId}_{variableName}_uncertainty
-      TIMESERIES_DATA_FILE_EXTENSIONS: .tif .nc .nc4
+    # environment:
+    #   TIMESERIES_DATA_PATH_TEMPLATE: /projects/GitRepos/timeseries-service/data/{datasetId}_{variableName}
+    #   TIMESERIES_UNCERTAINTY_PATH_TEMPLATE: /projects/GitRepos/timeseries-service/data/{datasetId}_{variableName}_uncertainty
+    #   TIMESERIES_DATA_FILE_EXTENSIONS: .tif .nc .nc4
     ports: 
       - 8001:8001
-    volumes:
-      - /projects:/projects
+    # volumes:
+    #   - /projects:/projects

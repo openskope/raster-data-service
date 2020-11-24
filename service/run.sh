@@ -7,6 +7,12 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# get the directory containing this script
+SCRIPT_DIR=`dirname $0`
+
+# enter directory containing this script
+cd ${SCRIPT_DIR}
+
 # run the yw-editor-web service and discard output to terminal
 ${JAVA_HOME}/bin/java                                       \
     -Dspring.config.location=application.properties         \
