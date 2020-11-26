@@ -2,7 +2,12 @@ ifeq ('$(OS)', 'Windows_NT')
 PWSH=powershell -noprofile -command
 endif
 
-REPRO_IMAGE=${REPRO_DOCKER_ORG}/${REPRO_NAME}:${REPRO_IMAGE_TAG}
+ifeq ('$(MODE)', 'prod')
+    REPRO_IMAGE=${REPRO_DOCKER_ORG}/${REPRO_NAME}:${REPRO_IMAGE_TAG}
+else
+    REPRO_IMAGE=${REPRO_DOCKER_ORG}/${REPRO_NAME}-repro:${REPRO_IMAGE_TAG}
+endif
+
 REPRO_DIR=/mnt/${REPRO_NAME}
 REPRO_CODE_DIR=./${REPRO_CODE}/
 REPRO_EXAMPLES_DIR = $(REPRO_DIR)/${REPRO_EXAMPLES}/

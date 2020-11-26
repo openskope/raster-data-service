@@ -62,19 +62,19 @@ RUN echo '***** Download and install maven *****'                           \
 
 ENV PATH /opt/maven-3/bin:$PATH
 
-RUN if [ ! "$MODE" = "prod"  ] ; then                                       \
- echo '***** Download and install Node.js from NodeSource *****'            \
- && curl -sL https://deb.nodesource.com/setup_15.x | bash -                 \
- && apt install -y nodejs                                                   \
-; fi
-
 COPY service /mnt/timeseries-service/service
-COPY data  /mnt/timeseries-service/data
+COPY data /mnt/timeseries-service/data
 
-RUN if [ "$MODE" = "prod" ] ; then                                           \
-    rm ${REPRO_MNT}/service/logs/* ;                                         \
-    chown -R ${REPRO_UID}.${REPRO_GID} ${REPRO_MNT}/service                               \
+RUN if [ "$MODE" = "prod" ] ; then                                          \
+    echo '***** Purge log files and make service directory accesible *****' \
+    && rm ${REPRO_MNT}/service/logs/*                                       \
+    && chown -R ${REPRO_UID}.${REPRO_GID} ${REPRO_MNT}/service              \
+; else                                                                      \
+    echo '***** Download and install Node.js from NodeSource *****'         \
+    && curl -sL https://deb.nodesource.com/setup_15.x | bash -              \
+    && apt install -y nodejs                                                \
 ; fi
+
 
 RUN echo '***** Add the REPRO user and group *****'                         \
     && groupadd ${REPRO_USER} --gid ${REPRO_GID}                            \
