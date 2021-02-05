@@ -1,20 +1,16 @@
-# detect if Make is running on Windows
-ifeq ('$(OS)', 'Windows_NT')
-PWSH=powershell -noprofile -command
-endif
+# This is the top-level Makefile for this REPRO.
+# Type 'make help' to list the available targets.
 
-# display help if no target is specified
+# set the default Make target
 default_target: help
 
-# read the repro customization file
-include repro.config
+# include required task-specific Makefile targets
+include .repro/010_Makefile.repro
+include .repro/020_Makefile.help
+include .repro/040_Makefile.code
+include .repro/050_Makefile.service
+include .repro/060_Makefile.image
+include .repro/070_Makefile.docker
+include .repro/080_Makefile.aliases
 
-# load the generic make targets
-include targets/01_setup.makefile
-include targets/02_aliases.makefile
-include targets/04_code.makefile
-include targets/05_service.makefile
-include targets/06_image.makefile
-include targets/07_docker.makefile
-include targets/08_help.makefile
 
