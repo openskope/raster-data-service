@@ -2,10 +2,5 @@
 ## # Targets for managing the service provided by this REPRO
 ## 
 
-
 start-service:          ## Start the service provided by this REPRO.
-ifdef IN_RUNNING_REPRO
 	$(RUN_IN_REPRO) $(REPRO_SERVICE_COMMAND)
-else 
-	$(RUN_IN_REPRO_EXPOSED) $(REPRO_SERVICE_COMMAND)
-endif

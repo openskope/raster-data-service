@@ -56,8 +56,7 @@ ENV PATH /opt/maven-3/bin:$PATH
 COPY service /mnt/timeseries-service/service
 COPY data /mnt/timeseries-service/data
 
-RUN echo '***** Purge log files and make service directory accesible *****' \
-    && rm ${REPRO_MNT}/service/logs/*                                       \
+RUN echo '***** Make service directory accesible *****' \
     && chown -R ${REPRO_UID}.${REPRO_GID} ${REPRO_MNT}/service
 
 RUN echo '***** Download and install Node.js from NodeSource *****'         \
