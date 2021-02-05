@@ -12,4 +12,4 @@ package: build
 
 test: package
 	make -C ../service run &
-	make -C ../javascript install test
+	make -C ../tests install test
