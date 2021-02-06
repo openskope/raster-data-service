@@ -51,8 +51,6 @@ RUN echo '***** Download and install maven *****'                           \
  && mv ${MAVEN_RELEASE_NAME} maven-3                                        \
  && rm ${MAVEN_ARCHIVE}
 
-ENV PATH /opt/maven-3/bin:$PATH
-
 COPY service /mnt/timeseries-service/service
 COPY data /mnt/timeseries-service/data
 
@@ -85,6 +83,9 @@ RUN echo '***** Clone geoserver-loader repo and install CLI tools *****'    \
  && cd geoserver-loader                                                     \
  && pip install .
 
+ENV PATH /opt/maven-3/bin:$PATH
+
+RUN echo "export PATH=${PATH}" >> ${BASHRC}
 RUN echo "export IN_RUNNING_REPRO=${REPRO_NAME}" >> ${BASHRC}
 RUN echo "cd ${REPRO_MNT}" >> ${BASHRC}
 

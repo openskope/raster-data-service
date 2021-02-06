@@ -1,4 +1,4 @@
-all: build test install
+all: build test
 
 clean:
 	mvn clean
@@ -10,6 +10,6 @@ package: build
 	mvn package
 	cp target/timeseries-service-*.jar ${REPRO_MNT}/service/
 
-test: package
+test: build package
 	make -C ../service run &
 	make -C ../tests install test
