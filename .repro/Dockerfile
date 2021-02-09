@@ -21,23 +21,37 @@ RUN echo '***** Install packages required for creating this image *****'    \
  && pip3 install numpy                                                      \
  && cd /usr/bin && ln -s python3 python
 
-RUN echo '***** download source package for GDAL 2.1.2 *****'               \
+RUN apt -y install pkg-config sqlite3 libsqlite3-dev libtiff-dev
+
+RUN echo '***** download source packages for PROJ *****'                    \
  && mkdir -p /tmp/builds                                                    \
  && cd /tmp/builds                                                          \
- && wget http://download.osgeo.org/gdal/2.1.2/gdal-2.1.2.tar.gz             \
- && gunzip gdal-2.1.2.tar.gz                                                \
- && tar -xvvf gdal-2.1.2.tar                                                \
+ && wget https://download.osgeo.org/proj/proj-7.2.1.tar.gz                  \
+ && gunzip proj-7.2.1.tar.gz                                                \
+ && tar -xvvf proj-7.2.1.tar                                                \
+ && cd ./proj-7.2.1                                                         \
+ && ./configure --without-curl                                              \
+ && make                                                                    \
+ && make install                                                            \
+ && ldconfig
+
+RUN echo '***** download source package for GDAL *****'                     \
+ && mkdir -p /tmp/builds                                                    \
+ && cd /tmp/builds                                                          \
+ && wget https://github.com/OSGeo/gdal/releases/download/v3.2.1/gdal-3.2.1.tar.gz \
+ && gunzip gdal-3.2.1.tar.gz                                                \
+ && tar -xvvf gdal-3.2.1.tar                                                \
                                                                             \
  && echo '***** configure and build GDAL with Python3 bindings ******'      \
- && cd /tmp/builds/gdal-2.1.2                                               \
+ && cd /tmp/builds/gdal-3.2.1                                               \
  && mkdir -p /opt/gdal                                                      \
- && ./configure --prefix /opt/gdal/gdal-2.1.2                               \
+ && ./configure --prefix /opt/gdal/gdal-3.2.1                               \
                 --with-python=$(which python3)                              \
  && make install
 
-ENV LD_LIBRARY_PATH=/opt/gdal/gdal-2.1.2/lib/
-ENV PYTHONPATH=/opt/gdal/gdal-2.1.2/lib/python3.7/site-packages/
-ENV PATH=/opt/gdal/gdal-2.1.2/bin/:$PATH
+ENV LD_LIBRARY_PATH=/opt/gdal/gdal-3.2.1/lib/
+ENV PYTHONPATH=/opt/gdal/gdal-3.2.1/lib/python3/dist-packages/
+ENV PATH=/opt/gdal/gdal-3.2.1/bin/:$PATH
 
 RUN echo '***** Download and install maven *****'                           \
  && MAVEN_REPO=https://mirrors.gigenet.com/apache/maven/maven-3             \
