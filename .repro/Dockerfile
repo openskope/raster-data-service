@@ -15,10 +15,11 @@ RUN echo '***** Install packages required for creating this image *****'    \
  &&  echo '***** Install command-line utility packages *****'               \
  && apt -y install git sudo less file tree make procps
 
- RUN echo '***** Install python2, pip, and numpy *****'                     \
- && apt -y install python python-pip                                        \
- && pip2 install --upgrade pip                                              \
- && pip2 install numpy
+ RUN echo '***** Install python3, pip3, and numpy *****'                    \
+ && apt -y install python3 python3-pip                                      \
+ && pip3 install --upgrade pip                                              \
+ && pip3 install numpy                                                      \
+ && cd /usr/bin && ln -s python3 python
 
 RUN echo '***** download source package for GDAL 2.1.2 *****'               \
  && mkdir -p /tmp/builds                                                    \
@@ -27,15 +28,15 @@ RUN echo '***** download source package for GDAL 2.1.2 *****'               \
  && gunzip gdal-2.1.2.tar.gz                                                \
  && tar -xvvf gdal-2.1.2.tar                                                \
                                                                             \
- && echo '***** configure and build GDAL with Python2 bindings ******'      \
+ && echo '***** configure and build GDAL with Python3 bindings ******'      \
  && cd /tmp/builds/gdal-2.1.2                                               \
  && mkdir -p /opt/gdal                                                      \
  && ./configure --prefix /opt/gdal/gdal-2.1.2                               \
-                --with-python=$(which python2)                              \
+                --with-python=$(which python3)                              \
  && make install
 
 ENV LD_LIBRARY_PATH=/opt/gdal/gdal-2.1.2/lib/
-ENV PYTHONPATH=/opt/gdal/gdal-2.1.2/lib/python2.7/site-packages/
+ENV PYTHONPATH=/opt/gdal/gdal-2.1.2/lib/python3.7/site-packages/
 ENV PATH=/opt/gdal/gdal-2.1.2/bin/:$PATH
 
 RUN echo '***** Download and install maven *****'                           \
@@ -61,6 +62,9 @@ RUN echo '***** Download and install Node.js from NodeSource *****'         \
     && curl -sL https://deb.nodesource.com/setup_15.x | bash -              \
     && apt install -y nodejs
 
+RUN echo '***** Ensure default python version is 3' *****                   \
+    && cd /usr/bin && rm -f python && ln -s python3 python
+
 RUN echo '***** Add the REPRO user and group *****'                         \
     && groupadd ${REPRO_USER} --gid ${REPRO_GID}                            \
     && useradd ${REPRO_USER} --uid ${REPRO_UID} --gid ${REPRO_GID}          \
@@ -78,10 +82,14 @@ WORKDIR $HOME
 
 COPY java/maven-settings.xml ${HOME}/.m2/settings.xml
 
-RUN echo '***** Clone geoserver-loader repo and install CLI tools *****'    \
- && git clone https://github.com/openskope/geoserver-loader.git             \
- && cd geoserver-loader                                                     \
- && pip install .
+ENV PATH ${HOME}/.local/bin:${PATH}
+ENV PYTHON_SCRIPTS_DIR ${HOME}/python
+
+COPY python ${PYTHON_SCRIPTS_DIR}
+
+RUN echo '***** Install the Python scripts *****'    \
+ && cd ${PYTHON_SCRIPTS_DIR}                         \
+ && pip3 install .
 
 ENV PATH /opt/maven-3/bin:$PATH
 

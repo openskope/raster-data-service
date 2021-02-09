@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 """
 Modeled after gdallocationinfo, this tool is designed to efficiently
 generate zonal statistics for a single region. Inputs include a raster 
@@ -11,6 +11,10 @@ called 'standard' will generate all 4 statistics.
 If the raster contains multiple bands the tools will loop through each band
 and determine the numerical value for every pixel within the boundary of
 the GeoJSON.
+
+This version of the script was written by Jeff Terstriep (jefft@illinois.edu)
+and copied from github.com:openskope/geoserver-loader/scripts/zonalinfo.py on
+08-Feb-2021.
 """
 
 import sys
