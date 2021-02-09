@@ -33,7 +33,9 @@ RUN echo '***** download source packages for PROJ *****'                    \
  && ./configure --without-curl                                              \
  && make                                                                    \
  && make install                                                            \
- && ldconfig
+ && ldconfig                                                                \
+ && cd /tmp/builds                                                          \
+ && rm -rf proj-7.2*
 
 RUN echo '***** download source package for GDAL *****'                     \
  && mkdir -p /tmp/builds                                                    \
@@ -47,7 +49,9 @@ RUN echo '***** download source package for GDAL *****'                     \
  && mkdir -p /opt/gdal                                                      \
  && ./configure --prefix /opt/gdal/gdal-3.2.1                               \
                 --with-python=$(which python3)                              \
- && make install
+ && make install                                                            \
+ && cd /tmp/builds                                                          \
+ && rm -rf gdal-3.2*
 
 ENV LD_LIBRARY_PATH=/opt/gdal/gdal-3.2.1/lib/
 ENV PYTHONPATH=/opt/gdal/gdal-3.2.1/lib/python3/dist-packages/
@@ -76,7 +80,7 @@ RUN echo '***** Download and install Node.js from NodeSource *****'         \
     && curl -sL https://deb.nodesource.com/setup_15.x | bash -              \
     && apt install -y nodejs
 
-RUN echo '***** Ensure default python version is 3' *****                   \
+RUN echo '***** Ensure default python version is 3 *****'                   \
     && cd /usr/bin && rm -f python && ln -s python3 python
 
 RUN echo '***** Add the REPRO user and group *****'                         \
