@@ -3,4 +3,4 @@
 ## 
 
 start-service:          ## Start the service provided by this REPRO.
-	$(RUN_IN_REPRO) $(REPRO_SERVICE_COMMAND)
+		$(RUN_IN_REPRO) 'make -C ${REPRO_SERVICE_DIR} install run'

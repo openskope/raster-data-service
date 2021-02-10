@@ -70,6 +70,8 @@ RUN echo '***** Download and install maven *****'                           \
  && mv ${MAVEN_RELEASE_NAME} maven-3                                        \
  && rm ${MAVEN_ARCHIVE}
 
+ENV PATH /opt/maven-3/bin:$PATH
+
 COPY service /mnt/timeseries-service/service
 COPY data /mnt/timeseries-service/data
 
@@ -93,23 +95,15 @@ RUN echo '***** Add the REPRO user and group *****'                         \
             > /etc/sudoers.d/${REPRO_USER}                                  \
     && chmod 0440 /etc/sudoers.d/repro
 
+# TODO: move this up to python installation
+RUN apt -y install python3-venv
+
 ENV HOME /home/${REPRO_USER}
 ENV BASHRC ${HOME}/.bashrc
 USER  ${REPRO_USER}
 WORKDIR $HOME
 
 COPY java/maven-settings.xml ${HOME}/.m2/settings.xml
-
-ENV PATH ${HOME}/.local/bin:${PATH}
-ENV PYTHON_SCRIPTS_DIR ${HOME}/python
-
-COPY python ${PYTHON_SCRIPTS_DIR}
-
-RUN echo '***** Install the Python scripts *****'    \
- && cd ${PYTHON_SCRIPTS_DIR}                         \
- && pip3 install .
-
-ENV PATH /opt/maven-3/bin:$PATH
 
 RUN echo "export PATH=${PATH}" >> ${BASHRC}
 RUN echo "export IN_RUNNING_REPRO=${REPRO_NAME}" >> ${BASHRC}
